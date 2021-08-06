@@ -5,7 +5,7 @@ import SwitchButton from '../../components/SwitchButton';
 import styles from './DevicesList.styles';
 import DeviceListEmpty from '../../components/DeviceListEmpty';
 import SubTitle from '../../components/SubTitle';
-
+import DeviceListItemCard from '../../components/DeviceListItemCard';
 
 const DevicesListPage = () => {
 /*
@@ -26,7 +26,7 @@ const DevicesListPage = () => {
 
     const deviceListEmpty = () => <DeviceListEmpty text="Cihaz Yok" />
     const deviceListItem = ({item}) => {
-        return <DeviceListItem />
+        return <DeviceListItemCard {...item} imageLeft={require('../../assets/ic_laptop.png')} imageRight={require('../../assets/ic_settings.png')}/>
     } 
 
 
