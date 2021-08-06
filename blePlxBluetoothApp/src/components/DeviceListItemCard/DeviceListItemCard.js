@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity,Image } from 'react-native';
 import styles from './DeviceListItemCard.styles';
+import Separator from '../../components/Separator';
 
 
 function DeviceListItemCard(devices) {
@@ -16,7 +17,7 @@ function DeviceListItemCard(devices) {
             </View>
             <Image style={styles.image_right} source={devices.imageRight} />
         </TouchableOpacity>
-
+        <Separator color='#eceff1' />
         </>
     )
 }

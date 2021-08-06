@@ -31,7 +31,7 @@ function Routes() {
 */
   
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator >
         <Stack.Screen name="DevicesListt" component={DevicesListStack} 
         options= {{
           headerShown: false,
@@ -50,8 +50,7 @@ function DevicesListStack() {
     <Stack.Navigator>
       <Stack.Screen name="DevicesList" component={DevicesList} 
       options={{
-        headerTitle: "BLE PLX",
-        
+        headerShown: false
       }}/>
     </Stack.Navigator>
   )

@@ -6,6 +6,7 @@ import styles from './DevicesList.styles';
 import DeviceListEmpty from '../../components/DeviceListEmpty';
 import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
+import Layout from '../../components/Layout';
 
 const DevicesListPage = () => {
 /*
@@ -24,7 +25,7 @@ const DevicesListPage = () => {
     const [deviceList, setDeviceList] = useState([]);
 
 
-    const deviceListEmpty = () => <DeviceListEmpty text="Cihaz Yok" />
+    const deviceListEmpty = () => <DeviceListEmpty text="No Device" />
     const deviceListItem = ({item}) => {
         return <DeviceListItemCard {...item} imageLeft={require('../../assets/ic_laptop.png')} imageRight={require('../../assets/ic_settings.png')}/>
     } 
@@ -59,14 +60,14 @@ const DevicesListPage = () => {
     };
 
 
-    return (
-        <SafeAreaView style={styles.container}>
-           <SwitchButton value={switchBoolValue} onValueChange={switchBluetoothEnabled} />
+    return (      
+          <Layout title = "Device List">
+               <SwitchButton value={switchBoolValue} onValueChange={switchBluetoothEnabled} />
            <SubTitle title="Device List"/>
            <FlatList data={deviceList}
                 ListEmptyComponent={deviceListEmpty}
                 renderItem={deviceListItem} />
-        </SafeAreaView>
+          </Layout>     
     )
 }
 

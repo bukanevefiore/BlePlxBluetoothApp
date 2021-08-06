@@ -1,4 +1,5 @@
 import { StyleSheet } from 'react-native';
+import colors from '../../styles/colors';
 
 
 export default StyleSheet.create({
@@ -17,6 +18,6 @@ export default StyleSheet.create({
         marginLeft: 10,
         flex: 1,
         marginTop: 3,
-        borderColor: '#eceff1',
+        borderColor: colors.acikgri,
     }
 })
