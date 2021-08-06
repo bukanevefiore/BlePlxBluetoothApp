@@ -14,13 +14,13 @@ import React from 'react';
 import { View, Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import DevicesList from './pages/DeviceList';
 
 
 const Stack = createNativeStackNavigator();
-
+const Drawer = createDrawerNavigator();
 
 function Routes() {
   return(
@@ -28,15 +28,18 @@ function Routes() {
     <View>
       <Text>sdfgh</Text>
     </View>
-
-  */ 
+*/
+  
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="DevicesList" component={DevicesListStack} />
+        <Stack.Screen name="DevicesList" component={DevicesListStack} 
+        options= {{
+          headerShown: false,
+        }}/>
 
       </Stack.Navigator>
     </NavigationContainer>
-    
+     
   )
 }
 
@@ -47,7 +50,8 @@ function DevicesListStack() {
     <Stack.Navigator>
       <Stack.Screen name="DevicesList" component={DevicesList} 
       options={{
-        headerShown: false
+        headerTitle: "Devices List",
+        
       }}/>
     </Stack.Navigator>
   )
