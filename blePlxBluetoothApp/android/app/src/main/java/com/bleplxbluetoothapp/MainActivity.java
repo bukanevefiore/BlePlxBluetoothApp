@@ -2,6 +2,8 @@ package com.bleplxbluetoothapp;
 
 import com.facebook.react.ReactActivity;
 
+import android.os.Bundle;
+
 public class MainActivity extends ReactActivity {
 
   /**
@@ -12,4 +14,11 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "blePlxBluetoothApp";
   }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(null);
+  }
 }
+
+
