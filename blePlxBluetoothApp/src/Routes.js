@@ -20,7 +20,7 @@ import DevicesList from './pages/DeviceList';
 
 
 const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator();
+//const Drawer = createDrawerNavigator();
 
 function Routes() {
   return(
@@ -32,7 +32,7 @@ function Routes() {
   
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="DevicesList" component={DevicesListStack} 
+        <Stack.Screen name="DevicesListt" component={DevicesListStack} 
         options= {{
           headerShown: false,
         }}/>
@@ -50,7 +50,7 @@ function DevicesListStack() {
     <Stack.Navigator>
       <Stack.Screen name="DevicesList" component={DevicesList} 
       options={{
-        headerTitle: "Devices List",
+        headerTitle: "BLE PLX",
         
       }}/>
     </Stack.Navigator>

@@ -9,7 +9,8 @@ export default StyleSheet.create({
     text: {
         fontWeight: 'bold',
         fontSize: 18,
-        flex: 1
+        flex: 1,
+        color: 'black'
     },
     switch: {
         width: 50,

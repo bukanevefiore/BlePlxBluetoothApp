@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text } from 'react-native';
-import styles from './DevicesCard.styles';
+import styles from './DeviceListItemCard.styles';
 
 
 function DevicesCard({devices}) {
