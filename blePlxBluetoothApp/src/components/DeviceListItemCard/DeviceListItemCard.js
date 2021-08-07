@@ -13,7 +13,7 @@ function DeviceListItemCard(devices) {
             </View>
             <View style={styles.center_container}>
                 <Text style={styles.name}>{devices.name}</Text>
-                <Text style={styles.adres}>Adress: {devices.adres}</Text>
+                <Text style={styles.adres}>Adress: {devices.id}</Text>
             </View>
             <Image style={styles.image_right} source={devices.imageRight} />
         </TouchableOpacity>
