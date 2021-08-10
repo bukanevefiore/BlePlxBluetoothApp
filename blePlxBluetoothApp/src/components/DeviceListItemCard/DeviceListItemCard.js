@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity,Image } from 'react-native';
 import styles from './DeviceListItemCard.styles';
-import Separator from '../../components/Separator';
+import Separator from '../Separator';
 
 
 function DeviceListItemCard(devices) {

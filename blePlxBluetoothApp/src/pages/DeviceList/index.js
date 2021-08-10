@@ -1,1 +1,1 @@
-export {default} from './DevicesListt';
+export {default} from './DevicesList';

@@ -6,7 +6,7 @@ export async function requestLocationPermission() {
     try {
         const granted = await PermissionsAndroid.request(
             PermissionsAndroid.PERMISSIONS.ACCESS_COARSE_LOCATION, {
-                title: 'Location permission for bluetooth scanning',
+                title: 'Bluetooth taraması için konum izni',
                 message: 'wahtever',
                 buttonNeutral: 'Ask Me Later',
                 buttonNegative: 'Cancel',
