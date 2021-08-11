@@ -3,10 +3,10 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './DeviceListItemCard.styles';
 import Separator from '../Separator';
 
-function DeviceListItemCard(devices) {
+function DeviceListItemCard({devices, onPress}) {
   return (
     <>
-      <TouchableOpacity style={styles.container}>
+      <TouchableOpacity style={styles.container} onPress={onPress}>
         <View style={styles.left_container}>
           <Image style={styles.image_left} source={devices.imageLeft} />
         </View>

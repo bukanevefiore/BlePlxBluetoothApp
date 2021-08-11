@@ -11,20 +11,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import DevicesList from './pages/DeviceList';
+import DeviceDetail from './pages/DeviceDetails/DeviceDetails';
 
 const Stack = createNativeStackNavigator();
 
 function Routes() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="DevicesListt"
-          component={DevicesListStack}
-          options={{
-            headerShown: false,
-          }}
-        />
+      <Stack.Navigator screenOptions={{headerShown: false}}>
+        <Stack.Screen name="DevicesListt" component={DevicesListStack} />
+        <Stack.Screen name="DeviceDetail" component={DeviceDetailStack} />
       </Stack.Navigator>
     </NavigationContainer>
   );
@@ -42,6 +38,14 @@ function DevicesListStack() {
           headerShown: false,
         }}
       />
+    </Stack.Navigator>
+  );
+}
+
+function DeviceDetailStack() {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen name="DeviceDetail" component={DeviceDetail} />
     </Stack.Navigator>
   );
 }

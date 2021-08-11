@@ -13,16 +13,17 @@ import Layout from '../../components/Layout';
 
 const manager = new BleManager();
 
-const DevicesListPage = () => {
+const DevicesListPage = ({navigation}) => {
   const [switchBoolValue, setSwitchBoolValue] = useState(false);
   const [deviceList, setDeviceList] = useState([]);
-  const [deviceId, setDeviceId] = useState([]);
+  const [deviceIdList, setDeviceIdList] = useState([]);
 
   const deviceListEmpty = () => <DeviceListEmpty text="No Device" />;
   const deviceListItem = ({item}) => {
     return (
       <DeviceListItemCard
-        {...item}
+        devices={item}
+        onPress={() => goDeviceDetailPage(item.id, item.name, item.rssi)}
         imageLeft={require('../../assets/image_left.png')}
         imageRight={require('../../assets/ic_settings.png')}
       />
@@ -38,7 +39,7 @@ const DevicesListPage = () => {
         onLocationEnabledPressed();
       }
     } catch (error) {
-      console.log(error);
+      Alert.alert('Hata oluştu', error);
     }
   }
 
@@ -47,11 +48,11 @@ const DevicesListPage = () => {
     console.log('içerde');
 
     if (error) {
-      console.log('Hata: ' + JSON.stringify(error));
+      Alert.alert('Hata: ' + JSON.stringify(error));
       return;
     }
     if (!device) {
-      return console.log('cihazlar null');
+      return Alert.alert('cihazlar null');
     }
 
     addDeviceToList(device);
@@ -61,10 +62,10 @@ const DevicesListPage = () => {
 
   // tarama sonucu bulunan cihazlardan, listede olmayan cihazları ekleme
   const addDeviceToList = device => {
-    if (!deviceId.includes(device.id)) {
+    if (!deviceIdList.includes(device.id)) {
       setDeviceList([...deviceList, device]);
-      setDeviceId([...deviceId, device.id]);
-      console.log(device.id);
+      setDeviceIdList([...deviceIdList, device.id]);
+      //console.log(device.id);
     }
   };
 
@@ -83,13 +84,13 @@ const DevicesListPage = () => {
   const deviceScan = () => {
     try {
       const permisson = requestLocationPermission();
-      console.log('Permission: ' + permisson);
       if (!permisson) {
+        Alert.alert('Konum izni yok!!');
       }
 
       manager.startDeviceScan(null, null, deviceScanListener);
     } catch (error) {
-      console.log('try catch hatası: ' + error);
+      Alert.alert('try catch hatası: ', error);
     }
   };
 
@@ -97,17 +98,15 @@ const DevicesListPage = () => {
   const disableBluetooth = async () => {
     try {
       const bluetoothState = await manager.state();
-      console.log('state: ' + bluetoothState);
 
       if (bluetoothState === 'PoweredOn') {
         manager.disable;
-        //setDeviceValue(false);
-        setDeviceList([]);
         manager.stopDeviceScan();
+        setDeviceList([]);
       }
       setSwitchBoolValue(false);
     } catch (error) {
-      console.log(error);
+      Alert.alert('Hata oluştu', error);
     }
   };
 
@@ -131,7 +130,17 @@ const DevicesListPage = () => {
     }
   };
 
-  // switch butonu durumu güncelleme
+  // detay sayfasına geçiş
+  const goDeviceDetailPage = (id, name, rssi) => {
+    const deviceConnectionStatus = connectToDevice(id);
+    if (deviceConnectionStatus) {
+      navigation.navigate('DeviceDetail', {
+        screen: 'DeviceDetail',
+        params: {id: id, name: name, rssi: rssi},
+      });
+    }
+  };
+
   const handleToggleBluetooth = value => {
     if (value) {
       console.log('tıklanadı');
@@ -139,6 +148,23 @@ const DevicesListPage = () => {
     }
     disableBluetooth();
   };
+
+  // cihaz bağlantısı
+  async function connectToDevice(deviceId) {
+    try {
+      await manager.connectToDevice(deviceId);
+      const isDeviceConnected = await manager.isDeviceConnected(deviceId); // bunu ayrı fonksiyona taşı
+      Alert.alert(isDeviceConnected);
+      if (isDeviceConnected) {
+        Alert.alert('Ble Plx', 'Cihaz Bağlandı');
+        return isDeviceConnected;
+      }
+      Alert.alert('Ble Plx', 'Cihaz Bağlanamadı');
+      return isDeviceConnected;
+    } catch (error) {
+      Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
+    }
+  }
 
   return (
     <Layout title="Device List">
