@@ -6,47 +6,42 @@
  * @flow strict-local
  */
 
-
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
-
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import DevicesList from './pages/DeviceList';
 
-
 const Stack = createNativeStackNavigator();
 
-
 function Routes() {
-  return(
-  
+  return (
     <NavigationContainer>
-      <Stack.Navigator >
-        <Stack.Screen name="DevicesListt" component={DevicesListStack} 
-        options= {{
-          headerShown: false,
-        }}/>
-
+      <Stack.Navigator>
+        <Stack.Screen
+          name="DevicesListt"
+          component={DevicesListStack}
+          options={{
+            headerShown: false,
+          }}
+        />
       </Stack.Navigator>
     </NavigationContainer>
-     
-  )
+  );
 }
 
 export default Routes;
 
 function DevicesListStack() {
-  return(
+  return (
     <Stack.Navigator>
-      <Stack.Screen name="DevicesList" component={DevicesList} 
-      options={{
-        headerShown: false
-      }}/>
+      <Stack.Screen
+        name="DevicesList"
+        component={DevicesList}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Stack.Navigator>
-  )
+  );
 }
-
-
-

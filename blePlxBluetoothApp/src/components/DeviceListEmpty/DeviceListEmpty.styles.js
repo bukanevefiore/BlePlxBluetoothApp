@@ -1,15 +1,15 @@
-import { StyleSheet } from 'react-native';
+import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
-    text: {
-        fontSize: 20,
-    },
-    container: {
-        alignItems: 'center'
-    },
-    image: {
-        width: 200,
-        height: 200,
-        marginVertical: 50
-    }
-})
+  text: {
+    fontSize: 20,
+  },
+  container: {
+    alignItems: 'center',
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginVertical: 50,
+  },
+});
