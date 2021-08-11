@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, SafeAreaView, FlatList, Platform, Button } from 'react-native';
 import { BleManager } from 'react-native-ble-plx';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import { requestLocationPermission } from '../../utils/requestLocationPermission';
 import { useDebouncedCallback } from 'use-debounce';
+import { ReactDOM } from 'react-dom';
 
 
 import SwitchButton from '../../components/SwitchButton';
@@ -12,28 +13,24 @@ import DeviceListEmpty from '../../components/DeviceListEmpty';
 import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
-import { data } from 'browserslist';
+
 
 
 const manager = new BleManager();
 
 const DevicesListPage = () => {
-    /*
-        const deviceList = [
-            {
-                name: 'Cris',
-                key: '1'
-            },
-            {
-                name: 'Lara',
-                key: '2'
-            },
-        ];
-    */
     const [switchBoolValue, setSwitchBoolValue] = useState(false);
-    const [deviceList, setDeviceList] = useState([]);
+    const [deviceList, setDeviceList] = useState([]);  
     const [deviceId, setDeviceId] = useState([]);
     const devicess = [];
+
+    /*
+const [state, setState] = useState({});
+setState(prevState => {
+  // Object.assign da kullanılabilir
+  return {...prevState, ...updatedValues};
+});
+    */
 
 
     const deviceListEmpty = () => <DeviceListEmpty text="No Device" />
@@ -68,13 +65,7 @@ const DevicesListPage = () => {
                 return console.log("cihazlar null");
             }
 
-            setTimeout(() => {
-
-                setDeviceList([...deviceList, device]);
-                setDeviceId([...deviceId, device.id]);
-                console.log(device);
-
-            }, 500);
+            addDeviceToList(device);
 
             console.log("burda");
         }
@@ -82,16 +73,28 @@ const DevicesListPage = () => {
 
 
     // tarama sonucu bulunan cihazlardan, listede olmayan cihazları ekleme
-    /*  const addDeviceToList = (device) => {
+      const addDeviceToList = (device) => {
           if(!deviceId.includes(device.id)){
 
                setDeviceList([...deviceList, device]);
-                setDeviceId([...deviceId, device.id]);
-
-              );
+               setDeviceId([...deviceId, device.id]);
+               console.log(device.id);
+               console.log(device.rssi);
+             
             }
       }
-  */
+  
+
+      // taramanın belli aralıklarla yapılması için use debounce kütüphanesi kullanımı
+    const deviceScanListener =
+        useDebouncedCallback(
+            (error, device) => {
+                handleDeviceScan(error, device);
+            },
+            200,
+            { maxWait: 2000 }
+        )
+
 
 
     //cihazları tarama
@@ -103,12 +106,7 @@ const DevicesListPage = () => {
         }
         try {
 
-            manager.startDeviceScan(null, null, 
-                (error, device) => 
-                    handleDeviceScan(error, device.target.deviceList)
-               );
-
-
+            manager.startDeviceScan(null, null, deviceScanListener);
 
         } catch (error) {
             console.log("try catch hatası: " + error);
@@ -142,7 +140,7 @@ const DevicesListPage = () => {
                     setSwitchBoolValue(true);
                     setTimeout(() => {
                         deviceScan();
-                    }, 5000);
+                    }, 3000);
                 }).catch(err => {
                     alert("Error" + err.message + ", Code : " + err.code);
                 });
@@ -174,6 +172,8 @@ const DevicesListPage = () => {
 }
 
 export default DevicesListPage;
+
+
 
 /*
 
