@@ -3,22 +3,22 @@ import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './DeviceListItemCard.styles';
 import Separator from '../Separator';
 
-function DeviceListItemCard({devices, onPress}) {
+function DeviceListItemCard({device, onPress}) {
   return (
     <>
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View style={styles.left_container}>
-          <Image style={styles.image_left} source={devices.imageLeft} />
+          <Image style={styles.image_left} source={device.imageLeft} />
         </View>
         <View style={styles.center_container}>
-          {devices.name ? (
-            <Text style={styles.name}>{devices.name}</Text>
+          {device.name ? (
+            <Text style={styles.name}>{device.name}</Text>
           ) : (
             <Text style={styles.name}>Device Name..</Text>
           )}
-          <Text style={styles.adres}>Adress: {devices.id}</Text>
+          <Text style={styles.adres}>Adress: {device.id}</Text>
         </View>
-        <Image style={styles.image_right} source={devices.imageRight} />
+        <Image style={styles.image_right} source={device.imageRight} />
       </TouchableOpacity>
       <Separator color="#eceff1" />
     </>

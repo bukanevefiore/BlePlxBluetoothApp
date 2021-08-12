@@ -12,6 +12,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import DevicesList from './pages/DeviceList';
 import DeviceDetail from './pages/DeviceDetails/DeviceDetails';
+import DeviceFeatureProvider from './context/provider';
 
 const Stack = createNativeStackNavigator();
 
@@ -30,15 +31,17 @@ export default Routes;
 
 function DevicesListStack() {
   return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="DevicesList"
-        component={DevicesList}
-        options={{
-          headerShown: false,
-        }}
-      />
-    </Stack.Navigator>
+    <DeviceFeatureProvider>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="DevicesList"
+          component={DevicesList}
+          options={{
+            headerShown: false,
+          }}
+        />
+      </Stack.Navigator>
+    </DeviceFeatureProvider>
   );
 }
 

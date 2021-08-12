@@ -4,6 +4,7 @@ import {BleManager} from 'react-native-ble-plx';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {requestLocationPermission} from '../../utils/requestLocationPermission';
 import {useDebouncedCallback} from 'use-debounce';
+import {useDispatch} from 'react-redux';
 
 import SwitchButton from '../../components/SwitchButton';
 import DeviceListEmpty from '../../components/DeviceListEmpty';
@@ -16,31 +17,19 @@ const manager = new BleManager();
 const DevicesListPage = ({navigation}) => {
   const [isBluetoothScanning, setIsBluetoothScanning] = useState(false);
   const [deviceList, setDeviceList] = useState([]);
+  const dispatch = useDispatch();
 
   const handledeviceListEmpty = () => <DeviceListEmpty text="No Device" />;
   const handledeviceListItem = ({item}) => {
     return (
       <DeviceListItemCard
-        devices={item}
+        device={item}
         onPress={() => connectToDevice(item.id)}
         imageLeft={require('../../assets/image_left.png')}
-        imageRight={require('../../assets/ic_settings.png')}
+        imageRight={require('../../assets/image_right.png')}
       />
     );
   };
-
-  // bluetooth aktif etme
-  async function enableBluetooth() {
-    const bluetoothState = await manager.state();
-    try {
-      if (bluetoothState !== 'PoweredOn') {
-        manager.enable;
-        onLocationEnabledPressed();
-      }
-    } catch (error) {
-      Alert.alert('Hata oluştu', error);
-    }
-  }
 
   // startDeviceScan sonrası yapılacak işlem
   const handleDeviceScan = (error, device) => {
@@ -57,13 +46,13 @@ const DevicesListPage = ({navigation}) => {
 
   // tarama sonucu bulunan cihazlardan, listede olmayan cihazları ekleme
   const addDeviceToList = device => {
-    /* const deviceIndex = deviceList.findIndex(
-      deviceId => deviceId === device.id,
+    const deviceIndex = deviceList.findIndex(
+      deviceIdControl => deviceIdControl.id === device.id,
     ); // buraya bak ve react context
-*/
-    // if (deviceIndex === -1) {
-    setDeviceList([...deviceList, device]);
-    // }
+    console.log(deviceIndex);
+    if (deviceIndex === -1) {
+      setDeviceList([...deviceList, device]);
+    }
   };
 
   // taramanın belli aralıklarla yapılması için use debounce kütüphanesi kullanımı
@@ -91,21 +80,6 @@ const DevicesListPage = ({navigation}) => {
     }
   };
 
-  // bluetooth kapatma
-  const disableBluetooth = async () => {
-    try {
-      const bluetoothState = await manager.state();
-
-      if (bluetoothState === 'PoweredOn') {
-        manager.stopDeviceScan();
-        setDeviceList([]);
-      }
-      setIsBluetoothScanning(false);
-    } catch (error) {
-      Alert.alert('Hata oluştu', error);
-    }
-  };
-
   // konum hizmetini aktif etme
   const onLocationEnabledPressed = () => {
     if (Platform.OS === 'android') {
@@ -127,25 +101,34 @@ const DevicesListPage = ({navigation}) => {
   };
 
   const handleToggleBluetooth = async value => {
+    const bluetoothState = await manager.state();
     if (value) {
-      const bluetoothState = await manager.state();
       if (bluetoothState !== 'PoweredOn') {
         manager.enable();
         onLocationEnabledPressed();
       }
-      setIsBluetoothScanning(false);
     }
-    setIsBluetoothScanning(false);
+    manager.disable();
+    setDeviceList([]);
     manager.stopDeviceScan();
     setDeviceList([]);
+    setIsBluetoothScanning(false);
   };
 
   // cihaz bağlantısı
   async function connectToDevice(deviceId) {
     try {
       const connectedDevice = await manager.connectToDevice(deviceId);
+      console.log(connectedDevice.id);
       const isDeviceConnected = await manager.isDeviceConnected(deviceId);
       Alert.alert(isDeviceConnected);
+
+      dispatch({
+        type: 'ADD_FEATURE',
+        payload: {
+          deviceFeature: await connectedDevice.characteristicsForService(),
+        },
+      });
 
       if (isDeviceConnected) {
         navigation.navigate('DeviceDetail', {
