@@ -14,16 +14,15 @@ import Layout from '../../components/Layout';
 const manager = new BleManager();
 
 const DevicesListPage = ({navigation}) => {
-  const [switchBoolValue, setSwitchBoolValue] = useState(false);
+  const [isBluetoothScanning, setIsBluetoothScanning] = useState(false);
   const [deviceList, setDeviceList] = useState([]);
-  const [deviceIdList, setDeviceIdList] = useState([]);
 
-  const deviceListEmpty = () => <DeviceListEmpty text="No Device" />;
-  const deviceListItem = ({item}) => {
+  const handledeviceListEmpty = () => <DeviceListEmpty text="No Device" />;
+  const handledeviceListItem = ({item}) => {
     return (
       <DeviceListItemCard
         devices={item}
-        onPress={() => goDeviceDetailPage(item.id, item.name, item.rssi)}
+        onPress={() => connectToDevice(item.id)}
         imageLeft={require('../../assets/image_left.png')}
         imageRight={require('../../assets/ic_settings.png')}
       />
@@ -31,7 +30,7 @@ const DevicesListPage = ({navigation}) => {
   };
 
   // bluetooth aktif etme
-  async function enabledBluetooth() {
+  async function enableBluetooth() {
     const bluetoothState = await manager.state();
     try {
       if (bluetoothState !== 'PoweredOn') {
@@ -45,8 +44,6 @@ const DevicesListPage = ({navigation}) => {
 
   // startDeviceScan sonrası yapılacak işlem
   const handleDeviceScan = (error, device) => {
-    console.log('içerde');
-
     if (error) {
       Alert.alert('Hata: ' + JSON.stringify(error));
       return;
@@ -56,17 +53,17 @@ const DevicesListPage = ({navigation}) => {
     }
 
     addDeviceToList(device);
-
-    console.log('burda');
   };
 
   // tarama sonucu bulunan cihazlardan, listede olmayan cihazları ekleme
   const addDeviceToList = device => {
-    if (!deviceIdList.includes(device.id)) {
-      setDeviceList([...deviceList, device]);
-      setDeviceIdList([...deviceIdList, device.id]);
-      //console.log(device.id);
-    }
+    /* const deviceIndex = deviceList.findIndex(
+      deviceId => deviceId === device.id,
+    ); // buraya bak ve react context
+*/
+    // if (deviceIndex === -1) {
+    setDeviceList([...deviceList, device]);
+    // }
   };
 
   // taramanın belli aralıklarla yapılması için use debounce kütüphanesi kullanımı
@@ -100,11 +97,10 @@ const DevicesListPage = ({navigation}) => {
       const bluetoothState = await manager.state();
 
       if (bluetoothState === 'PoweredOn') {
-        manager.disable;
         manager.stopDeviceScan();
         setDeviceList([]);
       }
-      setSwitchBoolValue(false);
+      setIsBluetoothScanning(false);
     } catch (error) {
       Alert.alert('Hata oluştu', error);
     }
@@ -119,7 +115,7 @@ const DevicesListPage = ({navigation}) => {
       })
         .then(data => {
           Alert.alert(data);
-          setSwitchBoolValue(true);
+          setIsBluetoothScanning(true);
           setTimeout(() => {
             deviceScan();
           }, 3000);
@@ -130,37 +126,38 @@ const DevicesListPage = ({navigation}) => {
     }
   };
 
-  // detay sayfasına geçiş
-  const goDeviceDetailPage = (id, name, rssi) => {
-    const deviceConnectionStatus = connectToDevice(id);
-    if (deviceConnectionStatus) {
-      navigation.navigate('DeviceDetail', {
-        screen: 'DeviceDetail',
-        params: {id: id, name: name, rssi: rssi},
-      });
-    }
-  };
-
-  const handleToggleBluetooth = value => {
+  const handleToggleBluetooth = async value => {
     if (value) {
-      console.log('tıklanadı');
-      return enabledBluetooth();
+      const bluetoothState = await manager.state();
+      if (bluetoothState !== 'PoweredOn') {
+        manager.enable();
+        onLocationEnabledPressed();
+      }
+      setIsBluetoothScanning(false);
     }
-    disableBluetooth();
+    setIsBluetoothScanning(false);
+    manager.stopDeviceScan();
+    setDeviceList([]);
   };
 
   // cihaz bağlantısı
   async function connectToDevice(deviceId) {
     try {
-      await manager.connectToDevice(deviceId);
-      const isDeviceConnected = await manager.isDeviceConnected(deviceId); // bunu ayrı fonksiyona taşı
+      const connectedDevice = await manager.connectToDevice(deviceId);
+      const isDeviceConnected = await manager.isDeviceConnected(deviceId);
       Alert.alert(isDeviceConnected);
+
       if (isDeviceConnected) {
-        Alert.alert('Ble Plx', 'Cihaz Bağlandı');
-        return isDeviceConnected;
+        navigation.navigate('DeviceDetail', {
+          screen: 'DeviceDetail',
+          params: {
+            id: connectedDevice.id,
+            name: connectedDevice.name,
+            rssi: connectedDevice.rssi,
+          },
+        });
       }
-      Alert.alert('Ble Plx', 'Cihaz Bağlanamadı');
-      return isDeviceConnected;
+      return;
     } catch (error) {
       Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
     }
@@ -169,15 +166,15 @@ const DevicesListPage = ({navigation}) => {
   return (
     <Layout title="Device List">
       <SwitchButton
-        value={switchBoolValue}
+        value={isBluetoothScanning}
         onValueChange={handleToggleBluetooth}
       />
       <SubTitle title="Device List" />
       <FlatList
         keyExtractor={(item, index) => item.id}
         data={deviceList}
-        ListEmptyComponent={deviceListEmpty}
-        renderItem={deviceListItem}
+        ListEmptyComponent={handledeviceListEmpty}
+        renderItem={handledeviceListItem}
       />
     </Layout>
   );
@@ -185,14 +182,10 @@ const DevicesListPage = ({navigation}) => {
 
 export default DevicesListPage;
 
-/*
-
-//   kendi kendine bundan eklemiş hata verdi {''}
-
-*/
+//  [BleError: Device 7D:F1:01:A5:6A:B4 was disconnected]
 
 /*
-
+  {''}
 try catch hatası: Error: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
 1. You might have mismatching versions of React and the renderer (such as React DOM)
 2. You might be breaking the Rules of Hooks
