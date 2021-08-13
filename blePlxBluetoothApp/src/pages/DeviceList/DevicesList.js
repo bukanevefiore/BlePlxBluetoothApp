@@ -49,7 +49,7 @@ const DevicesListPage = ({navigation}) => {
     const deviceIndex = deviceList.findIndex(
       deviceIdControl => deviceIdControl.id === device.id,
     ); // buraya bak ve react context
-    console.log(deviceIndex);
+    // console.log(deviceIndex);
     if (deviceIndex === -1) {
       setDeviceList([...deviceList, device]);
     }
@@ -120,27 +120,15 @@ const DevicesListPage = ({navigation}) => {
     try {
       const connectedDevice = await manager.connectToDevice(deviceId);
       console.log(connectedDevice.id);
-      const isDeviceConnected = await manager.isDeviceConnected(deviceId);
-      Alert.alert(isDeviceConnected);
 
       dispatch({
-        type: 'ADD_FEATURE',
+        type: 'SET_DEVICE',
         payload: {
-          deviceFeature: await connectedDevice.characteristicsForService(),
+          device: connectedDevice,
         },
       });
 
-      if (isDeviceConnected) {
-        navigation.navigate('DeviceDetail', {
-          screen: 'DeviceDetail',
-          params: {
-            id: connectedDevice.id,
-            name: connectedDevice.name,
-            rssi: connectedDevice.rssi,
-          },
-        });
-      }
-      return;
+      navigation.navigate('DeviceDetail');
     } catch (error) {
       Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
     }

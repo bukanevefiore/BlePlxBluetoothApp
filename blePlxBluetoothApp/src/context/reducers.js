@@ -1,9 +1,8 @@
 export default function (state, action) {
   switch (action.type) {
-    case 'ADD_FEATURE':
-      const {deviceFeature} = action.payload;
-      const newList = [...state.list, deviceFeature];
-      return {...state, list: newList};
+    case 'SET_DEVICE':
+      const {device} = action.payload;
+      return {...state, selectedDevice: device};
 
     default:
       return state;

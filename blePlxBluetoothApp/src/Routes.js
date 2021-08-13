@@ -18,37 +18,15 @@ const Stack = createNativeStackNavigator();
 
 function Routes() {
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{headerShown: false}}>
-        <Stack.Screen name="DevicesListt" component={DevicesListStack} />
-        <Stack.Screen name="DeviceDetail" component={DeviceDetailStack} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
-}
-
-export default Routes;
-
-function DevicesListStack() {
-  return (
     <DeviceFeatureProvider>
-      <Stack.Navigator>
-        <Stack.Screen
-          name="DevicesList"
-          component={DevicesList}
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack.Navigator>
+      <NavigationContainer>
+        <Stack.Navigator screenOptions={{headerShown: false}}>
+          <Stack.Screen name="DevicesList" component={DevicesList} />
+          <Stack.Screen name="DeviceDetail" component={DeviceDetail} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </DeviceFeatureProvider>
   );
 }
 
-function DeviceDetailStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="DeviceDetail" component={DeviceDetail} />
-    </Stack.Navigator>
-  );
-}
+export default Routes;
