@@ -62,7 +62,7 @@ const DevicesListPage = ({navigation}) => {
     },
     200,
     {
-      maxWait: 2000,
+      maxWait: 1000,
     },
   );
 

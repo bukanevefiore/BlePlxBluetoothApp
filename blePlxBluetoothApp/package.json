@@ -13,6 +13,7 @@
     "@react-navigation/bottom-tabs": "^6.0.2",
     "@react-navigation/drawer": "^6.1.0",
     "@react-navigation/native-stack": "^6.0.2",
+    "buffer": "^6.0.3",
     "link": "^0.1.5",
     "react": "17.0.1",
     "react-native": "^0.64.2",

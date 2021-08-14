@@ -20,8 +20,14 @@ function Routes() {
   return (
     <DeviceFeatureProvider>
       <NavigationContainer>
-        <Stack.Navigator screenOptions={{headerShown: false}}>
-          <Stack.Screen name="DevicesList" component={DevicesList} />
+        <Stack.Navigator>
+          <Stack.Screen
+            name="DevicesList"
+            component={DevicesList}
+            options={{
+              headerShown: false,
+            }}
+          />
           <Stack.Screen name="DeviceDetail" component={DeviceDetail} />
         </Stack.Navigator>
       </NavigationContainer>
