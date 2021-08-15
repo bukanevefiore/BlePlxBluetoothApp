@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Text, View} from 'react-native';
 import styles from './DeviceDetails.styles';
 import {useSelector} from 'react-redux';
@@ -6,13 +6,46 @@ import {Buffer} from 'buffer';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
+  const [characteristicList, setcharacteristicList] = useState([]);
 
+  async function getCharacteristics() {
+    await device.discoverAllServicesAndCharacteristics();
+    const services = await device.services();
+    services.forEach(async service => {
+      const characteristics = await device.characteristicsForService(
+        service.uuid,
+      );
+      characteristics.forEach(async characteristicsArray => {
+        const heightBuffer = Buffer.alloc(2);
+        heightBuffer.writeUInt16LE(characteristicsArray.value, 0);
+
+        const characteristic =
+          await device.writeCharacteristicWithResponseForService(
+            characteristicsArray.serviceUUID,
+            characteristicsArray.uuid,
+            heightBuffer.toString('base64'),
+          );
+        console.log(characteristic);
+      });
+    });
+  }
+
+  getCharacteristics();
+
+  return (
+    <View style={styles.container}>{device && <Text>{device.id}</Text>}</View>
+  );
+}
+
+//  serviceUUID: "00001800-0000-1000-8000-00805f9b34fb"
+//  characteristicsuuid: "00002a00-0000-1000-8000-00805f9b34fb"
+
+/*
   const getAll = async () => {
     try {
       await device.discoverAllServicesAndCharacteristics();
       const services = await device.services();
-      const characteristic = await getServicesAndCharacteristics(services);
-      console.log(characteristic);
+      await getServicesAndCharacteristics(services);
     } catch (error) {}
   };
 
@@ -45,8 +78,8 @@ export default function DeviceDetailPage() {
   };
 
   getAll();
-
-  /*
+  
+ 
   async function getServicesAndCharacteristics() {
     try {
       await device.discoverAllServicesAndCharacteristics();
@@ -69,7 +102,20 @@ export default function DeviceDetailPage() {
   }
   getServicesAndCharacteristics();
 */
-  return (
-    <View style={styles.container}>{device && <Text>{device.id}</Text>}</View>
-  );
-}
+
+/*
+
+ async function getCharacteristics() {
+    await device.discoverAllServicesAndCharacteristics();
+    const services = await device.services();
+    services.forEach(async service => {
+      const characteristics = await device.characteristicsForService(
+        service.uuid,
+      );
+      console.log(characteristics);
+    });
+  }
+
+  getCharacteristics();
+
+  */
