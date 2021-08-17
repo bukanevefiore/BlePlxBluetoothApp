@@ -13,6 +13,7 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import DevicesList from './pages/DeviceList';
 import DeviceDetail from './pages/DeviceDetails/DeviceDetails';
 import DeviceFeatureProvider from './context/provider';
+import colors from './styles/colors';
 
 const Stack = createNativeStackNavigator();
 
@@ -28,7 +29,16 @@ function Routes() {
               headerShown: false,
             }}
           />
-          <Stack.Screen name="DeviceDetail" component={DeviceDetail} />
+          <Stack.Screen
+            name="DeviceDetail"
+            component={DeviceDetail}
+            options={{
+              headerTintColor: colors.koyugri,
+              headerStyle: {
+                backgroundColor: colors.haki,
+              },
+            }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     </DeviceFeatureProvider>

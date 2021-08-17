@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
-import {Alert, FlatList, Platform} from 'react-native';
-import {BleManager} from 'react-native-ble-plx';
+import {ActivityIndicator, Alert, FlatList, Platform} from 'react-native';
+import {BleManager, ScanMode} from 'react-native-ble-plx';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {requestLocationPermission} from '../../utils/requestLocationPermission';
 import {useDebouncedCallback} from 'use-debounce';
@@ -11,6 +11,7 @@ import DeviceListEmpty from '../../components/DeviceListEmpty';
 import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
+import colors from '../../styles/colors';
 
 const manager = new BleManager();
 
@@ -31,24 +32,12 @@ const DevicesListPage = ({navigation}) => {
     );
   };
 
-  // startDeviceScan sonrası yapılacak işlem
-  const handleDeviceScan = (error, device) => {
-    if (error) {
-      Alert.alert('Hata: ' + JSON.stringify(error));
-      return;
-    }
-    if (!device) {
-      return Alert.alert('cihazlar null');
-    }
-
-    addDeviceToList(device);
-  };
-
   // tarama sonucu bulunan cihazlardan, listede olmayan cihazları ekleme
   const addDeviceToList = device => {
     const deviceIndex = deviceList.findIndex(
       deviceIdControl => deviceIdControl.id === device.id,
-    ); // buraya bak ve react context
+    );
+
     // console.log(deviceIndex);
     if (deviceIndex === -1) {
       setDeviceList([...deviceList, device]);
@@ -58,7 +47,17 @@ const DevicesListPage = ({navigation}) => {
   // taramanın belli aralıklarla yapılması için use debounce kütüphanesi kullanımı
   const deviceScanListener = useDebouncedCallback(
     (error, device) => {
-      handleDeviceScan(error, device);
+      if (error) {
+        Alert.alert('Hata: ' + JSON.stringify(error));
+        console.log(JSON.stringify(error));
+        return;
+      }
+
+      if (!device) {
+        return Alert.alert('cihazlar null');
+      }
+
+      addDeviceToList(device);
     },
     200,
     {
@@ -74,7 +73,8 @@ const DevicesListPage = ({navigation}) => {
         Alert.alert('Konum izni yok!!');
       }
 
-      manager.startDeviceScan(null, null, deviceScanListener);
+      const scanOptions = {scanMode: ScanMode.LowPower};
+      manager.startDeviceScan(null, scanOptions, deviceScanListener);
     } catch (error) {
       Alert.alert('try catch hatası: ', error);
     }
@@ -92,7 +92,7 @@ const DevicesListPage = ({navigation}) => {
           setIsBluetoothScanning(true);
           setTimeout(() => {
             deviceScan();
-          }, 3000);
+          }, 5000);
         })
         .catch(err => {
           Alert.alert('Error' + err.message + ', Code : ' + err.code);
@@ -117,6 +117,7 @@ const DevicesListPage = ({navigation}) => {
 
   // cihaz bağlantısı
   async function connectToDevice(deviceId) {
+    <ActivityIndicator animating={true} color={colors.koyugri} />;
     try {
       const connectedDevice = await manager.connectToDevice(deviceId);
       console.log(connectedDevice.id);
@@ -128,6 +129,7 @@ const DevicesListPage = ({navigation}) => {
         },
       });
 
+      <ActivityIndicator animating={false} color={colors.koyugri} />;
       navigation.navigate('DeviceDetail');
     } catch (error) {
       Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
