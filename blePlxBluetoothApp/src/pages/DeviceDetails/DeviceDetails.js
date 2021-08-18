@@ -10,71 +10,70 @@ import styles from './DeviceDetails.styles';
 import {useSelector} from 'react-redux';
 import {Buffer} from 'buffer';
 import colors from '../../styles/colors';
+import parseContentData from '../../utils/parseContentData';
 
 export default function DeviceDetailPage() {
   const abcList = [
-    [
-      {
-        _manager: [Object],
-        deviceID: 'EF:D2:7B:5E:7E:74',
-        id: 2,
-        isIndicatable: false,
-        isNotifiable: false,
-        isNotifying: false,
-        isReadable: true,
-        isWritableWithResponse: true,
-        isWritableWithoutResponse: false,
-        serviceID: 1,
-        serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
-        uuid: '00002a00-0000-1000-8000-00805f9b34fb',
-        value: null,
-      },
-      {
-        _manager: [Object],
-        deviceID: 'EF:D2:7B:5E:7E:74',
-        id: 3,
-        isIndicatable: false,
-        isNotifiable: false,
-        isNotifying: false,
-        isReadable: true,
-        isWritableWithResponse: false,
-        isWritableWithoutResponse: false,
-        serviceID: 1,
-        serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
-        uuid: '00002a01-0000-1000-8000-00805f9b34fb',
-        value: null,
-      },
-      {
-        _manager: [Object],
-        deviceID: 'EF:D2:7B:5E:7E:74',
-        id: 4,
-        isIndicatable: false,
-        isNotifiable: false,
-        isNotifying: false,
-        isReadable: true,
-        isWritableWithResponse: false,
-        isWritableWithoutResponse: false,
-        serviceID: 1,
-        serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
-        uuid: '00002a04-0000-1000-8000-00805f9b34fb',
-        value: null,
-      },
-      {
-        _manager: [Object],
-        deviceID: 'EF:D2:7B:5E:7E:74',
-        id: 5,
-        isIndicatable: false,
-        isNotifiable: false,
-        isNotifying: false,
-        isReadable: true,
-        isWritableWithResponse: false,
-        isWritableWithoutResponse: false,
-        serviceID: 1,
-        serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
-        uuid: '00002aa6-0000-1000-8000-00805f9b34fb',
-        value: null,
-      },
-    ],
+    {
+      _manager: [Object],
+      deviceID: 'EF:D2:7B:5E:7E:74',
+      id: 2,
+      isIndicatable: false,
+      isNotifiable: false,
+      isNotifying: false,
+      isReadable: true,
+      isWritableWithResponse: true,
+      isWritableWithoutResponse: false,
+      serviceID: 1,
+      serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+      uuid: '00002a00-0000-1000-8000-00805f9b34fb',
+      value: null,
+    },
+    {
+      _manager: [Object],
+      deviceID: 'EF:D2:7B:5E:7E:74',
+      id: 3,
+      isIndicatable: false,
+      isNotifiable: false,
+      isNotifying: false,
+      isReadable: true,
+      isWritableWithResponse: false,
+      isWritableWithoutResponse: false,
+      serviceID: 1,
+      serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+      uuid: '00002a01-0000-1000-8000-00805f9b34fb',
+      value: null,
+    },
+    {
+      _manager: [Object],
+      deviceID: 'EF:D2:7B:5E:7E:74',
+      id: 4,
+      isIndicatable: false,
+      isNotifiable: false,
+      isNotifying: false,
+      isReadable: true,
+      isWritableWithResponse: false,
+      isWritableWithoutResponse: false,
+      serviceID: 1,
+      serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+      uuid: '00002a04-0000-1000-8000-00805f9b34fb',
+      value: null,
+    },
+    {
+      _manager: [Object],
+      deviceID: 'EF:D2:7B:5E:7E:74',
+      id: 5,
+      isIndicatable: false,
+      isNotifiable: false,
+      isNotifying: false,
+      isReadable: true,
+      isWritableWithResponse: false,
+      isWritableWithoutResponse: false,
+      serviceID: 1,
+      serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+      uuid: '00002aa6-0000-1000-8000-00805f9b34fb',
+      value: null,
+    },
   ];
 
   const device = useSelector(d => d.selectedDevice);
@@ -95,10 +94,12 @@ export default function DeviceDetailPage() {
       await device.discoverAllServicesAndCharacteristics();
       const services = await device.services();
       //console.log(services);
-      const chr = await device.characteristicsForService(services[0].uuid);
-      characteristicList.push(chr);
-      const chr2 = await device.characteristicsForService(services[1].uuid);
-      characteristicList.push(chr2);
+      // const chr = await device.characteristicsForService(services[0].uuid);
+      //characteristicList.push(chr);
+      getServices(services);
+      console.log(characteristicList);
+
+      //setcharacteristicList(...characteristicList, chr);    // BU ŞEKİLDE LİSTEYE ATMIYOR
 
       console.log(characteristicList);
     } catch (error) {
@@ -106,48 +107,76 @@ export default function DeviceDetailPage() {
     }
   }
 
-  const MyComponent = () => (
-    <ActivityIndicator animating={true} color={colors.koyugri} />
-  );
-
   getServicesAndCharacteristics();
 
   <ActivityIndicator animating={false} color={colors.koyugri} />;
 
+  // sectionList için veriyi formatlama
   const DATA = [
     {
-      title: abcList[Object.keys(abcList)[0]].serviceUUID,
+      title: characteristicList[Object.keys(characteristicList)[0]].serviceUUID,
       data: [
-        abcList[Object.keys(abcList)[0]].uuid,
-        abcList[Object.keys(abcList)[1]].uuid,
-        abcList[Object.keys(abcList)[2]].uuid,
-        abcList[Object.keys(abcList)[3]].uuid,
+        characteristicList[Object.keys(characteristicList)[0]].uuid,
+        characteristicList[Object.keys(characteristicList)[1]].uuid,
+        characteristicList[Object.keys(characteristicList)[2]].uuid,
+        characteristicList[Object.keys(characteristicList)[3]].uuid,
       ],
     },
   ];
 
-  /*
-    services.forEach(async service => {
-      await getCharacteristics(service.uuid)
+  function delay() {
+    return new Promise(resolve => setTimeout(resolve, 1000));
+  }
+
+  async function getServices(services) {
+    try {
+      await Promise.all(
+        services.forEach(async service => {
+          await delay();
+          const characteristics = await device.characteristicsForService(
+            service.uuid,
+          );
+
+          setcharacteristicList(characteristics);
+        }),
+      );
+    } catch (error) {
+      console.log('Hata1:' + error);
+    }
+
+    /*services.forEach(function (item, i) {
+      asynchronousProcess(function (item) {
+        console.log(i);
       });
+    });  */
+  }
 
-      async getCharacteristics(serviceUuid) {
-        const characteristics = await device.characteristicsForService(
-          serviceUuid,
-        );
-        setcharacteristicList(...characteristicList,characteristics);
-      }
+  async function getCharacteristics(serviceUuid) {
+    try {
+      await delay();
+      const characteristics = await device.characteristicsForService(
+        serviceUuid,
+      );
 
+      //const parsedData = parseContentData(characteristics[0] || {});
+      //setcharacteristicList(parsedData);
 
-  const servicesAndCharacteristics = ({characteristicList}) => {
+      setcharacteristicList(characteristics);
+    } catch (error) {
+      console.log('hata2:' + error);
+    }
+  }
+
+  const servicesAndCharacteristicsSection = ({characteristicList}) => {
     const sections = characteristicList.map(serviceAndCharacteristic => ({
       title: serviceAndCharacteristic.serviceUUID,
       data: serviceAndCharacteristic.uuid,
     }));
   };
 
-    
-*/
+  const MyComponent = () => (
+    <ActivityIndicator animating={true} color={colors.koyugri} />
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -226,3 +255,97 @@ export default function DeviceDetailPage() {
   getCharacteristics();
 
   */
+
+/*
+const a = [
+  {
+    _manager: {
+      _activePromises: [Object],
+      _activeSubscriptions: [Object],
+      _errorCodesToMessagesMapping: [Object],
+      _eventEmitter: [NativeEventEmitter],
+      _scanEventSubscription: [EmitterSubscription],
+      _uniqueId: 20,
+    },
+    deviceID: 'EF:D2:7B:5E:7E:74',
+    id: 2,
+    isIndicatable: false,
+    isNotifiable: false,
+    isNotifying: false,
+    isReadable: true,
+    isWritableWithResponse: true,
+    isWritableWithoutResponse: false,
+    serviceID: 1,
+    serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+    uuid: '00002a00-0000-1000-8000-00805f9b34fb',
+    value: null,
+  },
+  {
+    _manager: {
+      _activePromises: [Object],
+      _activeSubscriptions: [Object],
+      _errorCodesToMessagesMapping: [Object],
+      _eventEmitter: [NativeEventEmitter],
+      _scanEventSubscription: [EmitterSubscription],
+      _uniqueId: 20,
+    },
+    deviceID: 'EF:D2:7B:5E:7E:74',
+    id: 3,
+    isIndicatable: false,
+    isNotifiable: false,
+    isNotifying: false,
+    isReadable: true,
+    isWritableWithResponse: false,
+    isWritableWithoutResponse: false,
+    serviceID: 1,
+    serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+    uuid: '00002a01-0000-1000-8000-00805f9b34fb',
+    value: null,
+  },
+  {
+    _manager: {
+      _activePromises: [Object],
+      _activeSubscriptions: [Object],
+      _errorCodesToMessagesMapping: [Object],
+      _eventEmitter: [NativeEventEmitter],
+      _scanEventSubscription: [EmitterSubscription],
+      _uniqueId: 20,
+    },
+    deviceID: 'EF:D2:7B:5E:7E:74',
+    id: 4,
+    isIndicatable: false,
+    isNotifiable: false,
+    isNotifying: false,
+    isReadable: true,
+    isWritableWithResponse: false,
+    isWritableWithoutResponse: false,
+    serviceID: 1,
+    serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+    uuid: '00002a04-0000-1000-8000-00805f9b34fb',
+    value: null,
+  },
+  {
+    _manager: {
+      _activePromises: [Object],
+      _activeSubscriptions: [Object],
+      _errorCodesToMessagesMapping: [Object],
+      _eventEmitter: [NativeEventEmitter],
+      _scanEventSubscription: [EmitterSubscription],
+      _uniqueId: 20,
+    },
+    deviceID: 'EF:D2:7B:5E:7E:74',
+    id: 5,
+    isIndicatable: false,
+    isNotifiable: false,
+    isNotifying: false,
+    isReadable: true,
+    isWritableWithResponse: false,
+    isWritableWithoutResponse: false,
+    serviceID: 1,
+    serviceUUID: '00001800-0000-1000-8000-00805f9b34fb',
+    uuid: '00002aa6-0000-1000-8000-00805f9b34fb',
+    value: null,
+  },
+];
+
+*/
