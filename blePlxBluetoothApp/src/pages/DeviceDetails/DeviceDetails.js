@@ -11,27 +11,32 @@ import {useSelector} from 'react-redux';
 import {useDebouncedCallback} from 'use-debounce';
 
 import colors from '../../styles/colors';
+import SectionListHeaderCard from '../../components/DeviceDetail/SectionListHeaderCard';
+import SectionListItemCard from '../../components/DeviceDetail/SectionListItemCard/SectionListItemCard';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
   const [serviceAndCharDataResult, setServiceAndCharDataResult] = useState([]);
 
-  const CharacteristicItem = ({item}) => (
-    <View style={styles.item}>
-      <Text style={styles.title}>{printId(item.uuid)}</Text>
-    </View>
+  const renderCharacteristicItem = ({item}) => (
+    <SectionListItemCard uuid={item.uuid.slice(4, 8)} />
   );
 
-  const SectionHeaderService = ({section}) => (
-    <Text style={styles.header}>{printId(section.title)}</Text>
+  const renderSectionHeader = ({section}) => (
+    <SectionListHeaderCard title={section.title.slice(4, 8)} />
   );
 
-  function printId(array) {
-    const newArray = [];
-    for (let i = 4; i < 8; i++) {
-      newArray.push(array[i]);
+  async function getServicesAndCharacteristics() {
+    try {
+      await device.discoverAllServicesAndCharacteristics();
+      const services = await device.services();
+      console.log(services);
+      await getServices(services);
+      console.log('data');
+      console.log(serviceAndCharDataResult);
+    } catch (error) {
+      console.log('Catch :' + error);
     }
-    return newArray;
   }
 
   const addCharAndServiceList = useDebouncedCallback(
@@ -41,23 +46,11 @@ export default function DeviceDetailPage() {
         resolvedService,
       ]);
     },
-    1000,
+    100,
     {
       maxWait: 1000,
     },
   );
-
-  async function getServicesAndCharacteristics() {
-    try {
-      await device.discoverAllServicesAndCharacteristics();
-      const services = await device.services();
-      await getServices(services);
-      console.log('data');
-      console.log(serviceAndCharDataResult);
-    } catch (error) {
-      console.log('Catch :' + error);
-    }
-  }
 
   useEffect(() => {
     getServicesAndCharacteristics();
@@ -103,8 +96,8 @@ export default function DeviceDetailPage() {
         sections={serviceAndCharDataResult}
         ListEmptyComponent={loading}
         keyExtractor={(item, index) => item + index}
-        renderItem={({item}) => <CharacteristicItem item={item} />}
-        renderSectionHeader={SectionHeaderService}
+        renderItem={renderCharacteristicItem}
+        renderSectionHeader={renderSectionHeader}
       />
     </SafeAreaView>
   );

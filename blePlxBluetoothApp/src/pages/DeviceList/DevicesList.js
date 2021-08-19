@@ -12,6 +12,7 @@ import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
 import colors from '../../styles/colors';
+import Separator from '../../components/Separator';
 
 const manager = new BleManager();
 
@@ -148,6 +149,7 @@ const DevicesListPage = ({navigation}) => {
         data={deviceList}
         ListEmptyComponent={handledeviceListEmpty}
         renderItem={handledeviceListItem}
+        ItemSeparatorComponent={Separator}
       />
     </Layout>
   );
