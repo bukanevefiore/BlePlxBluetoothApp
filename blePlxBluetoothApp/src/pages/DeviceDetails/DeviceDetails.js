@@ -51,12 +51,13 @@ export default function DeviceDetailPage() {
           title: service.uuid,
           data: characteristic[Object.keys(characteristic)].uuid,
         };
-        console.log(resolvedService);
+        //console.log(resolvedService);
         return resolvedService;
       });
+      //console.log(response);
       return response;
     } catch (error) {
-      console.log(error);
+      console.log('getServiceHata: ' + error);
     }
   }
 
@@ -71,7 +72,7 @@ export default function DeviceDetailPage() {
     return characteristics;
   }
 
-  const MyComponent = () => (
+  const loading = () => (
     <ActivityIndicator animating={true} color={colors.koyugri} />
   );
 
@@ -79,7 +80,7 @@ export default function DeviceDetailPage() {
     <SafeAreaView style={styles.container}>
       <SectionList
         sections={dataResult}
-        ListEmptyComponent={MyComponent}
+        ListEmptyComponent={loading}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => <CharacteristicItem item={item} />}
         renderSectionHeader={SectionHeaderService}
@@ -87,3 +88,9 @@ export default function DeviceDetailPage() {
     </SafeAreaView>
   );
 }
+
+/*
+
+TypeError: Invalid attempt to spread non-iterable instance.
+In order to be iterable, non-array objects must have a [Symbol.iterator]() method.
+*/

@@ -15,6 +15,8 @@
     "@react-navigation/native-stack": "^6.0.2",
     "buffer": "^6.0.3",
     "link": "^0.1.5",
+    "lottie-ios": "^3.2.3",
+    "lottie-react-native": "^4.0.3",
     "react": "17.0.1",
     "react-native": "^0.64.2",
     "react-native-android-location-enabler": "^1.2.2",
@@ -23,6 +25,7 @@
     "react-native-reanimated": "^2.2.0",
     "react-native-safe-area-context": "^3.2.0",
     "react-native-screens": "^3.5.0",
+    "react-native-vector-icons": "^8.1.0",
     "react-redux": "^7.2.4",
     "redux": "^4.1.1",
     "use-debounce": "^7.0.0"
