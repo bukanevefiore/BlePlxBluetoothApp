@@ -8,15 +8,17 @@ import {
 } from 'react-native';
 import styles from './DeviceDetails.styles';
 import {useSelector} from 'react-redux';
+import {useDebouncedCallback} from 'use-debounce';
+
 import colors from '../../styles/colors';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
-  const [dataResult, setDataResult] = useState([]);
+  const [serviceAndCharDataResult, setServiceAndCharDataResult] = useState([]);
 
   const CharacteristicItem = ({item}) => (
     <View style={styles.item}>
-      <Text style={styles.title}>{item}</Text>
+      <Text style={styles.title}>{item.uuid}</Text>
     </View>
   );
 
@@ -24,14 +26,26 @@ export default function DeviceDetailPage() {
     <Text style={styles.header}>{section.title}</Text>
   );
 
+  const addCharAndServiceList = useDebouncedCallback(
+    resolvedService => {
+      setServiceAndCharDataResult([
+        ...serviceAndCharDataResult,
+        resolvedService,
+      ]);
+    },
+    500,
+    {
+      maxWait: 1000,
+    },
+  );
+
   async function getServicesAndCharacteristics() {
     try {
       await device.discoverAllServicesAndCharacteristics();
       const services = await device.services();
-      const sectionDataResult = await getServices(services);
+      await getServices(services);
       console.log('data');
-      console.log(sectionDataResult);
-      setDataResult([...setDataResult, sectionDataResult]);
+      console.log(serviceAndCharDataResult);
     } catch (error) {
       console.log('Catch :' + error);
     }
@@ -42,20 +56,24 @@ export default function DeviceDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // Google > React Native Debug VSCode (React Native Tools)
   async function getServices(services) {
     try {
-      const response = await services.map(async service => {
+      for (let index = 0; index < services.length; index++) {
+        const service = services[index];
         const characteristic = await getCharacteristics(service.uuid);
         //console.log(characteristic);
         const resolvedService = {
           title: service.uuid,
-          data: characteristic[Object.keys(characteristic)].uuid,
+          data: characteristic,
         };
-        //console.log(resolvedService);
-        return resolvedService;
-      });
+        console.log(resolvedService);
+        addCharAndServiceList(resolvedService);
+      }
+      /*  const response = services.foreach(async service => {
+       
+      });*/
       //console.log(response);
-      return response;
     } catch (error) {
       console.log('getServiceHata: ' + error);
     }
@@ -72,14 +90,12 @@ export default function DeviceDetailPage() {
     return characteristics;
   }
 
-  const loading = () => (
-    <ActivityIndicator animating={true} color={colors.koyugri} />
-  );
+  const loading = () => <ActivityIndicator color={colors.koyugri} />;
 
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
-        sections={dataResult}
+        sections={serviceAndCharDataResult}
         ListEmptyComponent={loading}
         keyExtractor={(item, index) => item + index}
         renderItem={({item}) => <CharacteristicItem item={item} />}
