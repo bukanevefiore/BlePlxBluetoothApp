@@ -33,7 +33,7 @@ export default function DeviceDetailPage() {
         resolvedService,
       ]);
     },
-    500,
+    1000,
     {
       maxWait: 1000,
     },
@@ -62,18 +62,15 @@ export default function DeviceDetailPage() {
       for (let index = 0; index < services.length; index++) {
         const service = services[index];
         const characteristic = await getCharacteristics(service.uuid);
-        //console.log(characteristic);
+
         const resolvedService = {
           title: service.uuid,
           data: characteristic,
         };
+
         console.log(resolvedService);
         addCharAndServiceList(resolvedService);
       }
-      /*  const response = services.foreach(async service => {
-       
-      });*/
-      //console.log(response);
     } catch (error) {
       console.log('getServiceHata: ' + error);
     }

@@ -18,7 +18,7 @@ export default StyleSheet.create({
   header: {
     fontSize: 24,
     backgroundColor: colors.koyugri,
-    marginRight: 230,
+    marginRight: 10,
     paddingLeft: 10,
     color: 'black',
     fontWeight: 'bold',
