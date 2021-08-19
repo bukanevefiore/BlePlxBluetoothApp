@@ -18,13 +18,21 @@ export default function DeviceDetailPage() {
 
   const CharacteristicItem = ({item}) => (
     <View style={styles.item}>
-      <Text style={styles.title}>{item.uuid}</Text>
+      <Text style={styles.title}>{printId(item.uuid)}</Text>
     </View>
   );
 
   const SectionHeaderService = ({section}) => (
-    <Text style={styles.header}>{section.title}</Text>
+    <Text style={styles.header}>{printId(section.title)}</Text>
   );
+
+  function printId(array) {
+    const newArray = [];
+    for (let i = 4; i < 8; i++) {
+      newArray.push(array[i]);
+    }
+    return newArray;
+  }
 
   const addCharAndServiceList = useDebouncedCallback(
     resolvedService => {
@@ -87,7 +95,7 @@ export default function DeviceDetailPage() {
     return characteristics;
   }
 
-  const loading = () => <ActivityIndicator color={colors.koyugri} />;
+  const loading = () => <ActivityIndicator color={colors.darkgray} />;
 
   return (
     <SafeAreaView style={styles.container}>

@@ -6,6 +6,6 @@ export default StyleSheet.create({
     flex: 1,
     borderTopWidth: 1,
     marginHorizontal: 25,
-    borderColor: colors.acikgri,
+    borderColor: colors.lightGray,
   },
 });

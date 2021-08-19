@@ -31,12 +31,12 @@ export default StyleSheet.create({
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: colors.koyugri,
+    color: colors.darkgray,
   },
   adres: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: colors.solukgri,
+    color: colors.fadegray,
   },
   image_right: {
     width: 20,

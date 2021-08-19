@@ -117,7 +117,7 @@ const DevicesListPage = ({navigation}) => {
 
   // cihaz bağlantısı
   async function connectToDevice(deviceId) {
-    <ActivityIndicator animating={true} color={colors.koyugri} />;
+    <ActivityIndicator animating={true} color={colors.darkgray} />;
     try {
       const connectedDevice = await manager.connectToDevice(deviceId);
       console.log(connectedDevice.id);
@@ -129,7 +129,7 @@ const DevicesListPage = ({navigation}) => {
         },
       });
 
-      <ActivityIndicator animating={false} color={colors.koyugri} />;
+      <ActivityIndicator animating={false} color={colors.darkgray} />;
       navigation.navigate('DeviceDetail');
     } catch (error) {
       Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
