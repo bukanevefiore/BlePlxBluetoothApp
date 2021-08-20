@@ -11,7 +11,7 @@ export default StyleSheet.create({
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
     width: deviceSize.width,
-    height: deviceSize.height / 2.5,
+    height: deviceSize.height / 2.4,
   },
   modal: {
     justifyContent: 'flex-end',
@@ -19,7 +19,7 @@ export default StyleSheet.create({
   },
   input_container: {
     paddingHorizontal: 10,
-    backgroundColor: colors.fadegray,
+    backgroundColor: colors.lightGray,
     borderRadius: 20,
   },
   left_text: {

@@ -3,6 +3,7 @@ import {View, Text, TextInput} from 'react-native';
 import Modal from 'react-native-modal';
 
 import Buton from '../../Button/Button';
+import SelectDropdown from '../SelectDropdown';
 import styles from './CharateristicUpdateModal.styles';
 
 function CharacteristicUpdateModal({
@@ -10,6 +11,7 @@ function CharacteristicUpdateModal({
   onClose,
   onSend,
   charactericticUuid,
+  clickedDropdown,
 }) {
   const [text, setText] = useState(null);
 
@@ -37,8 +39,8 @@ function CharacteristicUpdateModal({
         <View style={styles.input_container}>
           <TextInput placeholder="Value" onChangeText={setText} />
         </View>
-        <Buton text="Gönder" />
-        <Buton text="Gönder" onPress={handleSend} />
+        <SelectDropdown clickedDropdown={clickedDropdown} />
+        <Buton text="SEND" onPress={handleSend} />
       </View>
     </Modal>
   );
