@@ -33,9 +33,9 @@ function Routes() {
             name="DeviceDetail"
             component={DeviceDetail}
             options={{
-              headerTintColor: colors.koyugri,
+              headerTintColor: 'black',
               headerStyle: {
-                backgroundColor: colors.haki,
+                backgroundColor: colors.darkgray,
               },
             }}
           />

@@ -3,16 +3,7 @@ import {View} from 'react-native';
 import styles from './Separator.styles';
 
 function Separator(props) {
-  return (
-    <View
-      style={[
-        styles.separator,
-        {
-          borderColor: props.color ? props.color : '#eceff1',
-        },
-      ]}
-    />
-  );
+  return <View style={styles.separator} />;
 }
 
 export default Separator;

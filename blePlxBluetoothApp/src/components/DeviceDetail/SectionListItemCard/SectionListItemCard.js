@@ -1,12 +1,12 @@
 import React from 'react';
-import {View, Text} from 'react-native';
+import {TouchableOpacity, Text} from 'react-native';
 import styles from './SectionListItemCard.styles';
 
-function SectionListItemCard({uuid}) {
+function SectionListItemCard({uuid, onPress}) {
   return (
-    <View style={styles.item}>
+    <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.title}>Characteristic Uuid: {uuid}</Text>
-    </View>
+    </TouchableOpacity>
   );
 }
 
