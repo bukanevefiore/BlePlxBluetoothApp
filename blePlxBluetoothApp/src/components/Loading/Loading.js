@@ -1,8 +1,9 @@
 import React from 'react';
-import LottieView from 'lottie-react-native';
+import {ActivityIndicator} from 'react-native';
+import colors from '../../styles/colors';
 
 function Loading() {
-  return <LottieView source={require('../../assets/loading.json')} autoPlay />;
+  return <ActivityIndicator color={colors.darkgray} />;
 }
 
 export default Loading;

@@ -1,18 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {
-  SafeAreaView,
-  Text,
-  View,
-  SectionList,
-  ActivityIndicator,
-} from 'react-native';
+import {Alert, SafeAreaView, SectionList} from 'react-native';
 import styles from './DeviceDetails.styles';
 import {useSelector} from 'react-redux';
 import {useDebouncedCallback} from 'use-debounce';
 
-import colors from '../../styles/colors';
 import SectionListHeaderCard from '../../components/DeviceDetail/SectionListHeaderCard';
 import SectionListItemCard from '../../components/DeviceDetail/SectionListItemCard/SectionListItemCard';
+import Loading from '../../components/Loading/Loading';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
@@ -32,10 +26,8 @@ export default function DeviceDetailPage() {
       const services = await device.services();
       console.log(services);
       await getServices(services);
-      console.log('data');
-      console.log(serviceAndCharDataResult);
     } catch (error) {
-      console.log('Catch :' + error);
+      Alert.alert('Catch :' + error);
     }
   }
 
@@ -57,7 +49,6 @@ export default function DeviceDetailPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Google > React Native Debug VSCode (React Native Tools)
   async function getServices(services) {
     try {
       for (let index = 0; index < services.length; index++) {
@@ -73,7 +64,7 @@ export default function DeviceDetailPage() {
         addCharAndServiceList(resolvedService);
       }
     } catch (error) {
-      console.log('getServiceHata: ' + error);
+      Alert.alert('getServiceHata: ' + error);
     }
   }
 
@@ -88,7 +79,7 @@ export default function DeviceDetailPage() {
     return characteristics;
   }
 
-  const loading = () => <ActivityIndicator color={colors.darkgray} />;
+  const loading = () => <Loading />;
 
   return (
     <SafeAreaView style={styles.container}>
@@ -103,8 +94,4 @@ export default function DeviceDetailPage() {
   );
 }
 
-/*
-
-TypeError: Invalid attempt to spread non-iterable instance.
-In order to be iterable, non-array objects must have a [Symbol.iterator]() method.
-*/
+// // Google > React Native Debug VSCode (React Native Tools)
