@@ -136,7 +136,7 @@ const DevicesListPage = ({navigation}) => {
   }
 
   return (
-    <Layout title="Device List">
+    <Layout title="Bluetooth Low Energy">
       <SwitchButton
         value={isBluetoothScanning}
         onValueChange={handleToggleBluetooth}

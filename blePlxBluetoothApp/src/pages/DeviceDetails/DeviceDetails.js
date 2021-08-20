@@ -103,6 +103,10 @@ export default function DeviceDetailPage() {
     console.log(value);
   }
 
+  function handleClickedFormat(clickedFormat) {
+    console.log(clickedFormat);
+  }
+
   return (
     <SafeAreaView style={styles.container}>
       <SectionList
@@ -117,12 +121,14 @@ export default function DeviceDetailPage() {
         onClose={handleInputToggle}
         onSend={handleSendValue}
         charactericticUuid={clickedCharacteristicUuid}
+        clickedDropdown={handleClickedFormat}
       />
     </SafeAreaView>
   );
 }
 
 /*
+
     
 Uınt8 - Uint16 - Uint32 - - Sint8 - Sint16 - Sint32 - Text - Byte Array
 

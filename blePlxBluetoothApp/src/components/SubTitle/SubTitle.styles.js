@@ -17,6 +17,6 @@ export default StyleSheet.create({
     marginLeft: 10,
     flex: 1,
     marginTop: 3,
-    borderColor: colors.lightGray,
+    borderColor: colors.fadegray,
   },
 });

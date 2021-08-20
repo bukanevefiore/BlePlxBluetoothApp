@@ -2,12 +2,12 @@ import React from 'react';
 import {View, Text, TouchableOpacity, Image} from 'react-native';
 import styles from './DeviceListItemCard.styles';
 
-function DeviceListItemCard({device, onPress}) {
+function DeviceListItemCard({device, onPress, imageLeft, imageRight}) {
   return (
     <>
       <TouchableOpacity style={styles.container} onPress={onPress}>
         <View style={styles.left_container}>
-          <Image style={styles.image_left} source={device.imageLeft} />
+          <Image style={styles.image_left} source={imageLeft} />
         </View>
         <View style={styles.center_container}>
           {device.name ? (
@@ -17,7 +17,7 @@ function DeviceListItemCard({device, onPress}) {
           )}
           <Text style={styles.adres}>Adress: {device.id}</Text>
         </View>
-        <Image style={styles.image_right} source={device.imageRight} />
+        <Image style={styles.image_right} source={imageRight} />
       </TouchableOpacity>
     </>
   );

@@ -7,7 +7,7 @@ export default StyleSheet.create({
   container: {
     paddingHorizontal: 20,
     paddingVertical: 25,
-    backgroundColor: colors.haki,
+    backgroundColor: colors.lightGray,
     height: deviceSize.height,
   },
   title: {

@@ -26,17 +26,17 @@ export default StyleSheet.create({
   center_container: {
     flex: 1,
     justifyContent: 'flex-start',
-    marginLeft: 60,
+    marginLeft: 40,
   },
   name: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: colors.darkgray,
+    color: colors.blacGray,
   },
   adres: {
     fontSize: 13,
     fontWeight: 'bold',
-    color: colors.fadegray,
+    color: colors.darkgray,
   },
   image_right: {
     width: 20,
