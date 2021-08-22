@@ -19,15 +19,19 @@ export default StyleSheet.create({
   },
   input_container: {
     paddingHorizontal: 10,
-    backgroundColor: colors.lightGray,
+    borderWidth: 1,
+    borderColor: colors.lightGray,
+    backgroundColor: colors.extlightGray,
     borderRadius: 20,
   },
   left_text: {
     fontSize: 19,
+    color: colors.blacGray,
     fontWeight: 'bold',
   },
   right_text: {
     fontSize: 16,
+    color: colors.darkgray,
     fontWeight: 'bold',
   },
   title_container: {

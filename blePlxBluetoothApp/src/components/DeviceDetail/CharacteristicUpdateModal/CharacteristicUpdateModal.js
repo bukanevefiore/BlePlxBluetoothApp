@@ -26,9 +26,7 @@ function CharacteristicUpdateModal({
   return (
     <Modal
       style={styles.modal}
-      swipeDirection="down"
       isVisible={isVisible}
-      onSwipeComplete={onClose}
       onBackButtonPress={onClose}
       onBackdropPress={onClose}>
       <View style={styles.container}>
@@ -37,7 +35,7 @@ function CharacteristicUpdateModal({
           <Text style={styles.right_text}> {charactericticUuid}</Text>
         </View>
         <View style={styles.input_container}>
-          <TextInput placeholder="Value" onChangeText={setText} />
+          <TextInput placeholder="Enter Value" onChangeText={setText} />
         </View>
         <SelectDropdown clickedDropdown={clickedDropdown} />
         <Buton text="SEND" onPress={handleSend} />
