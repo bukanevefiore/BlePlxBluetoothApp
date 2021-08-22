@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {Alert, SafeAreaView, SectionList} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useDebouncedCallback} from 'use-debounce';
+import {Buffer} from 'buffer';
 
 import styles from './DeviceDetails.styles';
 import SectionListHeaderCard from '../../components/DeviceDetail/SectionListHeaderCard';
@@ -17,13 +18,12 @@ export default function DeviceDetailPage() {
   const [clickedCharacteristicUuid, setClickedCharacteristicUuid] =
     useState('');
   const [clickedServiceUuid, setClickedServiceUuid] = useState('');
+  const [clickedFormat, setClickedFormat] = useState('');
 
   const renderSectionCharacteristicItem = ({item, section}) => (
     <SectionListItemCard
       uuid={item.uuid.slice(4, 8)}
-      onPress={() =>
-        handleInputToggle(item.uuid.slice(4, 8), section.title.slice(4, 8))
-      }
+      onPress={() => handleInputToggle(item.uuid, section.title)}
     />
   );
 
@@ -97,14 +97,31 @@ export default function DeviceDetailPage() {
     setClickedServiceUuid(serviceuuid);
   }
 
-  function handleSendValue(value) {
-    console.log(clickedCharacteristicUuid);
-    console.log(clickedServiceUuid);
-    console.log(value);
+  async function handleSendValue(value) {
+    console.log('veriler');
+    console.log('clickedCharacteristicUuid:' + clickedCharacteristicUuid);
+    console.log('clickedServiceUuid:' + clickedServiceUuid);
+    console.log('clickedFormat:' + clickedFormat);
+    console.log('Input Value:' + value);
+
+    try {
+      const heightBuffer = Buffer.alloc(2);
+      heightBuffer.writeInt16LE(value, 0);
+
+      const characteristic =
+        await device.writeCharacteristicWithResponseForService(
+          clickedServiceUuid,
+          clickedCharacteristicUuid,
+          heightBuffer.toString('base64'),
+        );
+      console.log(characteristic);
+    } catch (error) {
+      console.log('catchError: ' + error);
+    }
   }
 
-  function handleClickedFormat(clickedFormat) {
-    console.log(clickedFormat);
+  function handleClickedFormat(format) {
+    setClickedFormat(format);
   }
 
   return (
@@ -120,7 +137,6 @@ export default function DeviceDetailPage() {
         isVisible={inputModalVisible}
         onClose={handleInputToggle}
         onSend={handleSendValue}
-        charactericticUuid={clickedCharacteristicUuid}
         clickedDropdown={handleClickedFormat}
       />
     </SafeAreaView>
@@ -128,7 +144,7 @@ export default function DeviceDetailPage() {
 }
 
 /*
-
+charactericticUuid={clickedCharacteristicUuid.slice(4, 8)}
     
 Uınt8 - Uint16 - Uint32 - - Sint8 - Sint16 - Sint32 - Text - Byte Array
 

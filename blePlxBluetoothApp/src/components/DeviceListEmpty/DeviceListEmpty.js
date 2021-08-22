@@ -7,7 +7,7 @@ function DeviceListEmpty({text}) {
     <View style={styles.container}>
       <Image
         style={styles.image}
-        source={require('../../assets/ic_empty2.png')}
+        source={require('../../assets/image_left.png')}
       />
       <Text style={styles.text}>{text}</Text>
     </View>

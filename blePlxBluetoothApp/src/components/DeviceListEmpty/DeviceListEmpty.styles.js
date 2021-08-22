@@ -8,6 +8,7 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   image: {
+    opacity: 0.4,
     width: 200,
     height: 200,
     marginVertical: 50,

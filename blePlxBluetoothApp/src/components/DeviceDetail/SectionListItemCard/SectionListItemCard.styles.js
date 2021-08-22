@@ -3,13 +3,14 @@ import colors from '../../../styles/colors';
 
 export default StyleSheet.create({
   item: {
-    backgroundColor: colors.lightGray,
+    backgroundColor: colors.extlightGray,
     padding: 10,
     marginVertical: 4,
     marginHorizontal: 10,
-    borderRadius: 5,
+    borderWidth: 0.7,
+    borderRadius: 10,
+    borderColor: colors.fadegray,
     marginLeft: 18,
-    opacity: 0.8,
   },
   title: {
     fontSize: 20,

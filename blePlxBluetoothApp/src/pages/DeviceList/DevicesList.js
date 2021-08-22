@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {ActivityIndicator, Alert, FlatList, Platform} from 'react-native';
+import {Alert, FlatList, Platform} from 'react-native';
 import {BleManager, ScanMode} from 'react-native-ble-plx';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {requestLocationPermission} from '../../utils/requestLocationPermission';
@@ -11,7 +11,6 @@ import DeviceListEmpty from '../../components/DeviceListEmpty';
 import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
-import colors from '../../styles/colors';
 import Separator from '../../components/Separator';
 
 const manager = new BleManager();
@@ -39,7 +38,6 @@ const DevicesListPage = ({navigation}) => {
       deviceIdControl => deviceIdControl.id === device.id,
     );
 
-    // console.log(deviceIndex);
     if (deviceIndex === -1) {
       setDeviceList([...deviceList, device]);
     }
@@ -89,7 +87,7 @@ const DevicesListPage = ({navigation}) => {
         fastInterval: 5000,
       })
         .then(data => {
-          Alert.alert(data);
+          Alert.alert('Location and Bluetooth activated...');
           setIsBluetoothScanning(true);
           setTimeout(() => {
             deviceScan();

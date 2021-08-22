@@ -1,9 +1,9 @@
 import React from 'react';
-import {View, Text} from 'react-native';
 import Dropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './SelectDropdown.styles';
 import colors from '../../../styles/colors';
+import SelectedCharacterValueFormat from '../../../utils/SelectedCharacterValueFormat';
 
 function SelectDropdown({clickedDropdown}) {
   const formats = [
@@ -18,8 +18,8 @@ function SelectDropdown({clickedDropdown}) {
   ];
 
   function clickedFormat(selectedFormat) {
-    // console.log(selectedFormat);
-    clickedDropdown(selectedFormat);
+    console.log('format:' + selectedFormat);
+    clickedDropdown(SelectedCharacterValueFormat(selectedFormat));
   }
 
   const icon = () => (
@@ -29,8 +29,10 @@ function SelectDropdown({clickedDropdown}) {
   return (
     <Dropdown
       buttonStyle={styles.buton_container}
-      rowStyle={styles.buton_container}
-      dropdownStyle={styles.buton_container}
+      rowStyle={styles.row_container}
+      rowTextStyle={styles.row_text}
+      dropdownStyle={styles.dropdown_container}
+      buttonTextStyle={styles.buton_text}
       data={formats}
       defaultValueByIndex="0"
       dropdownIconPosition="right"
