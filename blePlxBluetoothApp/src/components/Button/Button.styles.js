@@ -14,4 +14,7 @@ export default StyleSheet.create({
     fontSize: 18,
     padding: 10,
   },
+  loading: {
+    margin: 10,
+  },
 });

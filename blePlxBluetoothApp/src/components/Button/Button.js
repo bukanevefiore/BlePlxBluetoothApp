@@ -1,16 +1,20 @@
 import React from 'react';
-import {View, Text, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {Text, TouchableOpacity, ActivityIndicator} from 'react-native';
 import styles from './Button.styles';
-import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Buton = ({onPress, loading, icon, text}) => {
+const Buton = ({onPress, loading, text}) => {
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={onPress}
       disabled={loading}>
       {loading ? (
-        <ActivityIndicator color="white" />
+        <ActivityIndicator
+          animating={true}
+          color="white"
+          size={20}
+          style={styles.loading}
+        />
       ) : (
         <Text style={styles.text}>{text}</Text>
       )}
