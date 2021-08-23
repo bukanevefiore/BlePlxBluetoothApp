@@ -19,6 +19,7 @@ export default function DeviceDetailPage() {
     useState('');
   const [clickedServiceUuid, setClickedServiceUuid] = useState('');
   const [clickedFormat, setClickedFormat] = useState('');
+  const [sendButonState, setSendButonState] = useState(false);
 
   const renderSectionCharacteristicItem = ({item, section}) => (
     <SectionListItemCard
@@ -92,9 +93,14 @@ export default function DeviceDetailPage() {
   const loading = () => <Loading />;
 
   function handleInputToggle(characteristicUuid, serviceuuid) {
+    setSendButonState(false);
     setInputModalVisible(!inputModalVisible);
     setClickedCharacteristicUuid(characteristicUuid);
     setClickedServiceUuid(serviceuuid);
+  }
+
+  function handleClickedFormat(format) {
+    setClickedFormat(format);
   }
 
   async function handleSendValue(value) {
@@ -105,8 +111,9 @@ export default function DeviceDetailPage() {
     console.log('Input Value:' + value);
 
     try {
+      setSendButonState(true);
       const heightBuffer = Buffer.alloc(2);
-      heightBuffer.writeInt16LE(value, 0);
+      heightBuffer.writeUInt16LE(value, 0);
 
       const characteristic =
         await device.writeCharacteristicWithResponseForService(
@@ -115,13 +122,11 @@ export default function DeviceDetailPage() {
           heightBuffer.toString('base64'),
         );
       console.log(characteristic);
+      setSendButonState(false);
     } catch (error) {
       console.log('catchError: ' + error);
+      setSendButonState(false);
     }
-  }
-
-  function handleClickedFormat(format) {
-    setClickedFormat(format);
   }
 
   return (
@@ -138,14 +143,17 @@ export default function DeviceDetailPage() {
         onClose={handleInputToggle}
         onSend={handleSendValue}
         clickedDropdown={handleClickedFormat}
+        loading={sendButonState}
       />
     </SafeAreaView>
   );
 }
 
 /*
-charactericticUuid={clickedCharacteristicUuid.slice(4, 8)}
-    
+   catchError: BleError: Operation was rejected
+
+    clickedCharacteristicUuid={characteristicUuid.slice(4, 8)}
+
 Uınt8 - Uint16 - Uint32 - - Sint8 - Sint16 - Sint32 - Text - Byte Array
 
     Bunları eklemen bekleniyor comboBox kısmına

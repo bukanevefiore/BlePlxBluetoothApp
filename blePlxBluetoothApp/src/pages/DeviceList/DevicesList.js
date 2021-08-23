@@ -118,7 +118,6 @@ const DevicesListPage = ({navigation}) => {
   async function connectToDevice(deviceId) {
     try {
       const connectedDevice = await manager.connectToDevice(deviceId);
-      console.log(connectedDevice.id);
 
       dispatch({
         type: 'SET_DEVICE',

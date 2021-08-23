@@ -1,23 +1,23 @@
 export default function (selectedFormat) {
   switch (selectedFormat) {
     case 0:
-      return 'writeUInt8';
+      return 'UInt8';
     case 1:
-      return 'writeUInt16LE';
+      return 'UInt16LE';
     case 2:
-      return 'writeUInt32LE';
+      return 'UInt32LE';
     case 3:
-      return 'writeSint8LE';
+      return 'Int8';
     case 4:
-      return 'writeSint16LE';
+      return 'Int16LE';
     case 5:
-      return 'writeSint32LE';
+      return 'Int32LE';
     case 6:
-      return 'writeTextLE';
+      return 'TextLE';
     case 7:
-      return 'writeByteArrayLE';
+      return 'ByteArrayLE';
 
     default:
-      return 'writeUInt16LE'; // default değer dönmüyor
+      return 'UInt16LE';
   }
 }
