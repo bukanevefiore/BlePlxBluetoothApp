@@ -109,20 +109,35 @@ export default function DeviceDetailPage() {
     console.log('clickedServiceUuid:' + clickedServiceUuid);
     console.log('clickedFormat:' + clickedFormat);
     console.log('Input Value:' + value);
+    /* 
+    try {
+      const read = await device.readCharacteristicForService(
+        clickedServiceUuid,
+        clickedCharacteristicUuid,
+      );
+      setSendButonState(false);
+      console.log(read);
+    } catch (error) {
+      console.log('catchError:' + error);
+    }
 
+ */
     try {
       setSendButonState(true);
       const heightBuffer = Buffer.alloc(2);
-      heightBuffer.writeUInt16LE(value, 0);
+      heightBuffer[clickedFormat](value, 0);
 
-      const characteristic =
-        await device.writeCharacteristicWithResponseForService(
-          clickedServiceUuid,
-          clickedCharacteristicUuid,
-          heightBuffer.toString('base64'),
-        );
-      console.log(characteristic);
+      //heightBuffer[clickedFormat]
+
+      const a = await device.writeCharacteristicWithResponseForService(
+        clickedServiceUuid,
+        clickedCharacteristicUuid,
+        heightBuffer.toString('base64'),
+      );
+
       setSendButonState(false);
+      console.log(a.value);
+      Alert.alert('Update process successful..');
     } catch (error) {
       console.log('catchError: ' + error);
       setSendButonState(false);
@@ -148,6 +163,25 @@ export default function DeviceDetailPage() {
     </SafeAreaView>
   );
 }
+
+/*
+
+veriler
+ LOG  clickedCharacteristicUuid:0000a235-b38d-4985-720e-0f993a68ee41
+ LOG  clickedServiceUuid:0000a234-b38d-4985-720e-0f993a68ee41
+ LOG  clickedFormat:writeUInt32LE
+ LOG  Input Value:5
+ LOG  catchError: RangeError: Index out of range
+ */
+
+/*
+ clickedCharacteristicUuid:0000a235-b38d-4985-720e-0f993a68ee41
+ LOG  clickedServiceUuid:0000a234-b38d-4985-720e-0f993a68ee41
+ LOG  clickedFormat:writeUInt32LE
+ LOG  Input Value:5
+ LOG  catchError: {"line":131963,"column":56,
+ "sourceURL":"http://localhost:8081/index.bundle?platform=android&dev=true&minify=false&app=com.bleplxbluetoothapp&modulesOnly=false&runModule=true"}
+*/
 
 /*
    catchError: BleError: Operation was rejected

@@ -1,11 +1,13 @@
 import React from 'react';
 import {TouchableOpacity, Text} from 'react-native';
 import styles from './SectionListItemCard.styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-function SectionListItemCard({uuid, onPress}) {
+function SectionListItemCard({uuid, onPress, iconSelected}) {
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.title}>Characteristic Uuid: {uuid}</Text>
+      <Icon name="read" size={25} onPress={iconSelected} />
     </TouchableOpacity>
   );
 }
