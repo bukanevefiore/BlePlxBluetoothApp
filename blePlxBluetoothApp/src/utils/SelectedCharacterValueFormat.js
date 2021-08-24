@@ -1,3 +1,5 @@
+import {Buffer} from 'buffer';
+
 export default function (selectedFormat) {
   switch (selectedFormat) {
     case 0:
@@ -21,3 +23,13 @@ export default function (selectedFormat) {
       return 'writeUInt16LE';
   }
 }
+
+/*
+const = {
+  name= "a",
+  uint8: => {
+    const heightBuffer = Buffer.alloc(2);
+    heightBuffer[clickedFormat](value, 0);
+  }
+}
+*/

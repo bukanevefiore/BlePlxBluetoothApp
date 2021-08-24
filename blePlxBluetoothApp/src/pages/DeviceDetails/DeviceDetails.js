@@ -109,7 +109,7 @@ export default function DeviceDetailPage() {
     console.log('clickedServiceUuid:' + clickedServiceUuid);
     console.log('clickedFormat:' + clickedFormat);
     console.log('Input Value:' + value);
-    /* 
+   
     try {
       const read = await device.readCharacteristicForService(
         clickedServiceUuid,
@@ -121,27 +121,25 @@ export default function DeviceDetailPage() {
       console.log('catchError:' + error);
     }
 
- */
+ /*
     try {
       setSendButonState(true);
-      const heightBuffer = Buffer.alloc(2);
+      const heightBuffer = Buffer.allocUnsafe(4);
       heightBuffer[clickedFormat](value, 0);
 
-      //heightBuffer[clickedFormat]
-
-      const a = await device.writeCharacteristicWithResponseForService(
+      await device.writeCharacteristicWithResponseForService(
         clickedServiceUuid,
         clickedCharacteristicUuid,
         heightBuffer.toString('base64'),
       );
 
       setSendButonState(false);
-      console.log(a.value);
       Alert.alert('Update process successful..');
+      console.log('Güncelleme başarılı');
     } catch (error) {
       console.log('catchError: ' + error);
       setSendButonState(false);
-    }
+    }*/
   }
 
   return (
