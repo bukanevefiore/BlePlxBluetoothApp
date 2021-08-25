@@ -103,7 +103,7 @@ export default function DeviceDetailPage() {
     setClickedCharacteristicUuid(characteristicUuid);
     setClickedServiceUuid(serviceuuid);
 
-    // https://base64.guru/converter/decode/hex  önce burdan base64 den hex koda çeviriyoruz
+    // https://base64.guru/converter/decode/hex  =>  char value yi önce burdan base64 den hex koda çeviriyoruz
     const a = Buffer.from('03000000', 'hex'); // sonra bu işlemi bu yapıyoruz
     console.log(a); // {"data": [22, 0, 0, 0], "type": "Buffer"}
     console.log(a[0]); // 22
