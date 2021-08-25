@@ -83,8 +83,8 @@ veriler
 
 
   name:22  => son değer
-  AAAAAA==
-  FgAAAA==   =>   
+  1. değer : AAAAAA==
+  2. değer :  FgAAAA==     =>   
   16000000   =>   Hex Kod
 
 

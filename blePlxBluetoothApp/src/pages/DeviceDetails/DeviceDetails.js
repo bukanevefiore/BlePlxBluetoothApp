@@ -109,20 +109,24 @@ export default function DeviceDetailPage() {
     console.log('16000000 : ' + a[0]); // 22
 
     try {
-      const characteristicValuesRead =
-        await device.readCharacteristicForService(
-          clickedServiceUuid,
-          clickedCharacteristicUuid,
-        );
+      const readCharacteristic = await device.readCharacteristicForService(
+        clickedServiceUuid,
+        clickedCharacteristicUuid,
+      );
+      const heightInCentimeters = Buffer.from(
+        readCharacteristic.value,
+        'base64',
+      ).readUInt16LE(0);
       Alert.alert();
       Alert.alert(
-        'Value :   ' + characteristicValuesRead.value,
+        'Value :   ' + readCharacteristic.value,
         'Servise Uuid : ' +
           clickedServiceUuid.slice(4, 8) +
           ' Characteristic Uuid : ' +
           clickedCharacteristicUuid.slice(4, 8),
       );
-      console.log(characteristicValuesRead);
+      console.log(readCharacteristic);
+      console.log('heightInCentimeters : ' + heightInCentimeters);
     } catch (error) {
       console.log('catchError:' + error);
     }
