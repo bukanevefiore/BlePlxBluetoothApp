@@ -7,7 +7,11 @@ function SectionListItemCard({uuid, onPress, iconSelected}) {
   return (
     <TouchableOpacity style={styles.item} onPress={onPress}>
       <Text style={styles.title}>Characteristic Uuid: {uuid}</Text>
-      <Icon name="read" size={25} onPress={iconSelected} />
+      <Icon
+        name="arrow-bottom-left-bold-outline"
+        size={25}
+        onPress={iconSelected}
+      />
     </TouchableOpacity>
   );
 }

@@ -3,7 +3,6 @@ import Dropdown from 'react-native-select-dropdown';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import styles from './SelectDropdown.styles';
 import colors from '../../../styles/colors';
-import SelectedCharacterValueFormat from '../../../utils/SelectedCharacterValueFormat';
 
 function SelectDropdown({clickedDropdown}) {
   const formats = ['UInt8', 'UInt16', 'UInt32', 'SinT8', 'Sint16', 'Sint32'];
