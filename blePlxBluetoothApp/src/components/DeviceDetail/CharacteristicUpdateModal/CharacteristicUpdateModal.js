@@ -24,9 +24,9 @@ const CharacteristicUpdateModal = ({
       return buffer.toString('base64');
     },
     uint16: () => {
-      const a = Buffer.allocUnsafe(4);
-      a.writeUInt16LE(text, 0);
-      return a.toString('base64');
+      const buffer = Buffer.allocUnsafe(4);
+      buffer.writeUInt16LE(text, 0);
+      return buffer.toString('base64');
     },
     uint32: () => {
       const buffer = Buffer.allocUnsafe(4);
@@ -91,10 +91,6 @@ const CharacteristicUpdateModal = ({
       onBackButtonPress={onClose}
       onBackdropPress={onClose}>
       <View style={styles.container}>
-        <View style={styles.title_container}>
-          <Text style={styles.left_text}>Characteristic Uuid: </Text>
-          <Text style={styles.right_text}>{clickedCharacteristicUuid}</Text>
-        </View>
         <View style={styles.input_container}>
           <TextInput placeholder="Enter Value" onChangeText={setText} />
         </View>

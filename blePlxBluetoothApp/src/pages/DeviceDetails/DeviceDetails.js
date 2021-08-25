@@ -15,9 +15,9 @@ export default function DeviceDetailPage() {
 
   const [serviceAndCharDataResult, setServiceAndCharDataResult] = useState([]);
   const [inputModalVisible, setInputModalVisible] = useState(false);
-  const [clickedCharacteristicUuid, setClickedCharacteristicUuid] =
+  const [selectedCharacteristicUuid, setSelectedCharacteristicUuid] =
     useState('');
-  const [clickedServiceUuid, setClickedServiceUuid] = useState('');
+  const [selectedServiceUuid, setSelectedServiceUuid] = useState('');
   const [sendButonState, setSendButonState] = useState(false);
 
   const renderSectionCharacteristicItem = ({item, section}) => (
@@ -95,38 +95,34 @@ export default function DeviceDetailPage() {
   function handleInputToggle(characteristicUuid, serviceuuid) {
     setSendButonState(false);
     setInputModalVisible(!inputModalVisible);
-    setClickedCharacteristicUuid(characteristicUuid);
-    setClickedServiceUuid(serviceuuid);
+    setSelectedCharacteristicUuid(characteristicUuid);
+    setSelectedServiceUuid(serviceuuid);
   }
 
   async function characteristicValueRead(characteristicUuid, serviceuuid) {
-    setClickedCharacteristicUuid(characteristicUuid);
-    setClickedServiceUuid(serviceuuid);
-
-    // https://base64.guru/converter/decode/hex  =>  char value yi önce burdan base64 den hex koda çeviriyoruz
-    const a = Buffer.from('16000000', 'hex'); // sonra bu işlemi bu yapıyoruz
-    console.log(a); // {"data": [22, 0, 0, 0], "type": "Buffer"}
-    console.log('16000000 : ' + a[0]); // 22
+    setSelectedCharacteristicUuid(characteristicUuid);
+    setSelectedServiceUuid(serviceuuid);
 
     try {
       const readCharacteristic = await device.readCharacteristicForService(
-        clickedServiceUuid,
-        clickedCharacteristicUuid,
+        selectedServiceUuid,
+        selectedCharacteristicUuid,
       );
       const heightInCentimeters = Buffer.from(
         readCharacteristic.value,
         'base64',
       ).readUInt16LE(0);
-      Alert.alert();
+
       Alert.alert(
         'Value :   ' + readCharacteristic.value,
-        'Servise Uuid : ' +
-          clickedServiceUuid.slice(4, 8) +
-          ' Characteristic Uuid : ' +
-          clickedCharacteristicUuid.slice(4, 8),
+        'ServiseUuid : ' +
+          selectedServiceUuid.slice(4, 8) +
+          ', CharacteristicUuid : ' +
+          selectedCharacteristicUuid.slice(4, 8) +
+          '  ReadCharacteristic.value : ' +
+          heightInCentimeters,
       );
-      console.log(readCharacteristic);
-      console.log('heightInCentimeters : ' + heightInCentimeters);
+      console.log('readCharacteristic.value : ' + heightInCentimeters);
     } catch (error) {
       console.log('catchError:' + error);
     }
@@ -134,8 +130,8 @@ export default function DeviceDetailPage() {
 
   async function handleSendValue(heightBuffer) {
     console.log('veriler');
-    console.log('clickedCharacteristicUuid:' + clickedCharacteristicUuid);
-    console.log('clickedServiceUuid:' + clickedServiceUuid);
+    console.log('clickedCharacteristicUuid:' + selectedCharacteristicUuid);
+    console.log('clickedServiceUuid:' + selectedServiceUuid);
     console.log('heightBuffer2:' + heightBuffer);
 
     try {
@@ -144,8 +140,8 @@ export default function DeviceDetailPage() {
       console.log('buffer:' + heightBuffer.toString('base64'));
 
       await device.writeCharacteristicWithResponseForService(
-        clickedServiceUuid,
-        clickedCharacteristicUuid,
+        selectedServiceUuid,
+        selectedCharacteristicUuid,
         heightBuffer.toString('base64'),
       );
 
