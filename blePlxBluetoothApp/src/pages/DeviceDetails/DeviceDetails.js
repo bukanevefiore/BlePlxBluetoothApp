@@ -18,13 +18,13 @@ export default function DeviceDetailPage() {
   const [clickedCharacteristicUuid, setClickedCharacteristicUuid] =
     useState('');
   const [clickedServiceUuid, setClickedServiceUuid] = useState('');
-  const [clickedFormat, setClickedFormat] = useState('');
   const [sendButonState, setSendButonState] = useState(false);
 
   const renderSectionCharacteristicItem = ({item, section}) => (
     <SectionListItemCard
       uuid={item.uuid.slice(4, 8)}
       onPress={() => handleInputToggle(item.uuid, section.title)}
+      iconSelected={() => characteristicValueRead(item.uuid, section.title)}
     />
   );
 
@@ -99,33 +99,45 @@ export default function DeviceDetailPage() {
     setClickedServiceUuid(serviceuuid);
   }
 
-  function handleClickedFormat(format) {
-    setClickedFormat(format);
-  }
+  async function characteristicValueRead(characteristicUuid, serviceuuid) {
+    setClickedCharacteristicUuid(characteristicUuid);
+    setClickedServiceUuid(serviceuuid);
 
-  async function handleSendValue(value) {
-    console.log('veriler');
-    console.log('clickedCharacteristicUuid:' + clickedCharacteristicUuid);
-    console.log('clickedServiceUuid:' + clickedServiceUuid);
-    console.log('clickedFormat:' + clickedFormat);
-    console.log('Input Value:' + value);
-   
+    // https://base64.guru/converter/decode/hex  önce burdan base64 den hex koda çeviriyoruz
+    const a = Buffer.from('03000000', 'hex'); // sonra bu işlemi bu yapıyoruz
+    console.log(a); // {"data": [22, 0, 0, 0], "type": "Buffer"}
+    console.log(a[0]); // 22
+
     try {
-      const read = await device.readCharacteristicForService(
-        clickedServiceUuid,
-        clickedCharacteristicUuid,
+      const characteristicValuesRead =
+        await device.readCharacteristicForService(
+          clickedServiceUuid,
+          clickedCharacteristicUuid,
+        );
+      Alert.alert();
+      Alert.alert(
+        'Value :   ' + characteristicValuesRead.value,
+        'Servise Uuid : ' +
+          clickedServiceUuid.slice(4, 8) +
+          ' Characteristic Uuid : ' +
+          clickedCharacteristicUuid.slice(4, 8),
       );
-      setSendButonState(false);
-      console.log(read);
+      console.log(characteristicValuesRead);
     } catch (error) {
       console.log('catchError:' + error);
     }
+  }
 
- /*
+  async function handleSendValue(heightBuffer) {
+    console.log('veriler');
+    console.log('clickedCharacteristicUuid:' + clickedCharacteristicUuid);
+    console.log('clickedServiceUuid:' + clickedServiceUuid);
+    console.log('heightBuffer2:' + heightBuffer);
+
     try {
       setSendButonState(true);
-      const heightBuffer = Buffer.allocUnsafe(4);
-      heightBuffer[clickedFormat](value, 0);
+
+      console.log('buffer:' + heightBuffer.toString('base64'));
 
       await device.writeCharacteristicWithResponseForService(
         clickedServiceUuid,
@@ -139,7 +151,7 @@ export default function DeviceDetailPage() {
     } catch (error) {
       console.log('catchError: ' + error);
       setSendButonState(false);
-    }*/
+    }
   }
 
   return (
@@ -155,7 +167,6 @@ export default function DeviceDetailPage() {
         isVisible={inputModalVisible}
         onClose={handleInputToggle}
         onSend={handleSendValue}
-        clickedDropdown={handleClickedFormat}
         loading={sendButonState}
       />
     </SafeAreaView>

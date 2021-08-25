@@ -1,5 +1,3 @@
-import {Buffer} from 'buffer';
-
 export default function (selectedFormat) {
   switch (selectedFormat) {
     case 0:

@@ -3,6 +3,8 @@ import colors from '../../../styles/colors';
 
 export default StyleSheet.create({
   item: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     backgroundColor: colors.extlightGray,
     padding: 10,
     marginVertical: 4,

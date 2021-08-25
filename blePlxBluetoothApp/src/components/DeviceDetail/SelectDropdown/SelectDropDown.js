@@ -6,20 +6,10 @@ import colors from '../../../styles/colors';
 import SelectedCharacterValueFormat from '../../../utils/SelectedCharacterValueFormat';
 
 function SelectDropdown({clickedDropdown}) {
-  const formats = [
-    'UInt8',
-    'UInt16',
-    'UInt32',
-    'SinT8',
-    'Sint16',
-    'Sint32',
-    'Text',
-    'Byte Array',
-  ];
+  const formats = ['UInt8', 'UInt16', 'UInt32', 'SinT8', 'Sint16', 'Sint32'];
 
   function clickedFormat(selectedFormat) {
-    console.log('format:' + selectedFormat);
-    clickedDropdown(SelectedCharacterValueFormat(selectedFormat));
+    clickedDropdown(selectedFormat);
   }
 
   const icon = () => (
