@@ -5,7 +5,15 @@ import styles from './SelectDropdown.styles';
 import colors from '../../../styles/colors';
 
 function SelectDropdown({clickedDropdown}) {
-  const formats = ['UInt8', 'UInt16', 'UInt32', 'SinT8', 'Sint16', 'Sint32'];
+  const formats = [
+    'UInt8',
+    'UInt16',
+    'UInt32',
+    'SinT8',
+    'Sint16',
+    'Sint32',
+    'Text',
+  ];
 
   function clickedFormat(selectedFormat) {
     clickedDropdown(selectedFormat);

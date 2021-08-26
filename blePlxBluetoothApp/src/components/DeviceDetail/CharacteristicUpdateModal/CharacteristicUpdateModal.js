@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {View, Text, TextInput, Alert} from 'react-native';
+import {View, TextInput, Alert} from 'react-native';
 import Modal from 'react-native-modal';
 import {Buffer} from 'buffer';
 
@@ -7,20 +7,14 @@ import Buton from '../../Button/Button';
 import SelectDropdown from '../SelectDropdown';
 import styles from './CharateristicUpdateModal.styles';
 
-const CharacteristicUpdateModal = ({
-  isVisible,
-  onClose,
-  onSend,
-  clickedCharacteristicUuid,
-  loading,
-}) => {
+const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
   const [text, setText] = useState(null);
   const [selectedFormat, setSelectedFormat] = useState('');
 
   const heightBuffer = {
     uint8: () => {
       const buffer = Buffer.allocUnsafe(4);
-      buffer.writeUInt8(text, 3);
+      buffer.writeUInt8(text, 0);
       return buffer.toString('base64');
     },
     uint16: () => {
@@ -34,12 +28,12 @@ const CharacteristicUpdateModal = ({
       return buffer.toString('base64');
     },
     int8: () => {
-      const buffer = Buffer.allocUnsafe(4);
+      const buffer = Buffer.allocUnsafe(2);
       buffer.writeInt8(text, 0);
       return buffer.toString('base64');
     },
     int16: () => {
-      const buffer = Buffer.allocUnsafe(4);
+      const buffer = Buffer.allocUnsafe(2);
       buffer.writeInt16LE(text, 0);
       return buffer.toString('base64');
     },
@@ -47,6 +41,10 @@ const CharacteristicUpdateModal = ({
       const buffer = Buffer.allocUnsafe(4);
       buffer.writeInt32LE(text, 0);
       return buffer.toString('base64');
+    },
+    text: () => {
+      const buffer = Buffer.from(text).toString('base64');
+      return buffer;
     },
   };
 
@@ -64,6 +62,8 @@ const CharacteristicUpdateModal = ({
         return heightBuffer.int16();
       case 5:
         return heightBuffer.int32();
+      case 6:
+        return heightBuffer.text();
 
       default:
         return heightBuffer.uint16();
@@ -78,9 +78,10 @@ const CharacteristicUpdateModal = ({
 
     console.log('Text:' + text);
     console.log('format:' + selectedFormat);
-    const b = valueFormatter();
-    console.log('height buffer1:' + b);
-    onSend(b);
+    const formattedValue = valueFormatter();
+    console.log('height buffer1:' + formattedValue);
+
+    onSend(formattedValue);
     setText(null);
   }
 

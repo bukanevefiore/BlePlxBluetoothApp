@@ -67,11 +67,6 @@ const DevicesListPage = ({navigation}) => {
   //cihazları tarama
   const deviceScan = () => {
     try {
-      const permisson = requestLocationPermission();
-      if (!permisson) {
-        Alert.alert('Konum izni yok!!');
-      }
-
       const scanOptions = {scanMode: ScanMode.LowPower};
       manager.startDeviceScan(null, scanOptions, deviceScanListener);
     } catch (error) {
@@ -87,7 +82,7 @@ const DevicesListPage = ({navigation}) => {
         fastInterval: 5000,
       })
         .then(data => {
-          Alert.alert('Location and Bluetooth activated...');
+          Alert.alert('Location and Bluetooth ' + data);
           setIsBluetoothScanning(true);
           setTimeout(() => {
             deviceScan();
@@ -110,7 +105,6 @@ const DevicesListPage = ({navigation}) => {
     manager.disable();
     setDeviceList([]);
     manager.stopDeviceScan();
-    setDeviceList([]);
     setIsBluetoothScanning(false);
   };
 

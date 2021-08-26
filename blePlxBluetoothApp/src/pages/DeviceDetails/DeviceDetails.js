@@ -100,18 +100,19 @@ export default function DeviceDetailPage() {
   }
 
   async function characteristicValueRead(characteristicUuid, serviceuuid) {
-    setSelectedCharacteristicUuid(characteristicUuid);
-    setSelectedServiceUuid(serviceuuid);
-
     try {
+      setSelectedCharacteristicUuid(characteristicUuid);
+      setSelectedServiceUuid(serviceuuid);
+
       const readCharacteristic = await device.readCharacteristicForService(
         selectedServiceUuid,
         selectedCharacteristicUuid,
       );
+
       const heightInCentimeters = Buffer.from(
         readCharacteristic.value,
         'base64',
-      ).readUInt16LE(0);
+      ).toString('ascii'); //.readUInt16LE(0); // //
 
       Alert.alert(
         'Value :   ' + readCharacteristic.value,
@@ -122,6 +123,7 @@ export default function DeviceDetailPage() {
           '  ReadCharacteristic.value : ' +
           heightInCentimeters,
       );
+      console.log(readCharacteristic);
       console.log('readCharacteristic.value : ' + heightInCentimeters);
     } catch (error) {
       console.log('catchError:' + error);
@@ -137,12 +139,10 @@ export default function DeviceDetailPage() {
     try {
       setSendButonState(true);
 
-      console.log('buffer:' + heightBuffer.toString('base64'));
-
       await device.writeCharacteristicWithResponseForService(
         selectedServiceUuid,
         selectedCharacteristicUuid,
-        heightBuffer.toString('base64'),
+        heightBuffer,
       );
 
       setSendButonState(false);
