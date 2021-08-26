@@ -76,10 +76,7 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
       return;
     }
 
-    console.log('Text:' + text);
-    console.log('format:' + selectedFormat);
     const formattedValue = valueFormatter();
-    console.log('height buffer1:' + formattedValue);
 
     onSend(formattedValue);
     setText(null);

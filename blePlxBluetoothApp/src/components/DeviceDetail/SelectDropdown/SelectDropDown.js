@@ -35,16 +35,6 @@ function SelectDropdown({clickedDropdown}) {
       dropdownIconPosition="right"
       renderDropdownIcon={icon}
       onSelect={(selectedItem, index) => clickedFormat(index)}
-      buttonTextAfterSelection={(selectedItem, index) => {
-        // öğe seçildikten sonra temsil edilen metin
-        // veri dizisi bir nesne dizisiyse, öğe seçildikten sonra işlemek için selectedItem.property değerini döndür
-        return selectedItem;
-      }}
-      rowTextForSelection={(item, index) => {
-        // açılır menüde her öğe için temsil edilen metin
-        // veri dizisi bir nesne dizisiyse, açılır menüdeki öğeyi temsil etmek için item.property döndürün
-        return item;
-      }}
     />
   );
 }

@@ -112,7 +112,7 @@ export default function DeviceDetailPage() {
       const heightInCentimeters = Buffer.from(
         readCharacteristic.value,
         'base64',
-      ).toString('ascii'); //.readUInt16LE(0); // //
+      ).toString('ascii'); //.readUInt16LE(0); //
 
       Alert.alert(
         'Value :   ' + readCharacteristic.value,
@@ -123,19 +123,12 @@ export default function DeviceDetailPage() {
           '  ReadCharacteristic.value : ' +
           heightInCentimeters,
       );
-      console.log(readCharacteristic);
-      console.log('readCharacteristic.value : ' + heightInCentimeters);
     } catch (error) {
-      console.log('catchError:' + error);
+      Alert.alert('catchError:' + error);
     }
   }
 
   async function handleSendValue(heightBuffer) {
-    console.log('veriler');
-    console.log('clickedCharacteristicUuid:' + selectedCharacteristicUuid);
-    console.log('clickedServiceUuid:' + selectedServiceUuid);
-    console.log('heightBuffer2:' + heightBuffer);
-
     try {
       setSendButonState(true);
 
@@ -147,9 +140,8 @@ export default function DeviceDetailPage() {
 
       setSendButonState(false);
       Alert.alert('Update process successful..');
-      console.log('Güncelleme başarılı');
     } catch (error) {
-      console.log('catchError: ' + error);
+      Alert.alert('catchError: ' + error);
       setSendButonState(false);
     }
   }
@@ -172,38 +164,3 @@ export default function DeviceDetailPage() {
     </SafeAreaView>
   );
 }
-
-/*
-
-veriler
- LOG  clickedCharacteristicUuid:0000a235-b38d-4985-720e-0f993a68ee41
- LOG  clickedServiceUuid:0000a234-b38d-4985-720e-0f993a68ee41
- LOG  clickedFormat:writeUInt32LE
- LOG  Input Value:5
- LOG  catchError: RangeError: Index out of range
- */
-
-/*
- clickedCharacteristicUuid:0000a235-b38d-4985-720e-0f993a68ee41
- LOG  clickedServiceUuid:0000a234-b38d-4985-720e-0f993a68ee41
- LOG  clickedFormat:writeUInt32LE
- LOG  Input Value:5
- LOG  catchError: {"line":131963,"column":56,
- "sourceURL":"http://localhost:8081/index.bundle?platform=android&dev=true&minify=false&app=com.bleplxbluetoothapp&modulesOnly=false&runModule=true"}
-*/
-
-/*
-   catchError: BleError: Operation was rejected
-
-    clickedCharacteristicUuid={characteristicUuid.slice(4, 8)}
-
-Uınt8 - Uint16 - Uint32 - - Sint8 - Sint16 - Sint32 - Text - Byte Array
-
-    Bunları eklemen bekleniyor comboBox kısmına
-
-    U = Unsigned
-    S = Signed
-
-    JS'te ki karşılıklarına bakarsın internetten
-
-*/
