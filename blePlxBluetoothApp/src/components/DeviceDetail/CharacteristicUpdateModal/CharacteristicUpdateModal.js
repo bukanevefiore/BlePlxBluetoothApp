@@ -11,7 +11,7 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
   const [text, setText] = useState(null);
   const [selectedFormat, setSelectedFormat] = useState('');
 
-  const heightBuffer = {
+  const formatValue = {
     uint8: () => {
       const buffer = Buffer.allocUnsafe(4);
       buffer.writeUInt8(text, 0);
@@ -51,22 +51,22 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
   function valueFormatter() {
     switch (selectedFormat) {
       case 0:
-        return heightBuffer.uint8();
+        return formatValue.uint8();
       case 1:
-        return heightBuffer.uint16();
+        return formatValue.uint16();
       case 2:
-        return heightBuffer.uint32();
+        return formatValue.uint32();
       case 3:
-        return heightBuffer.int8();
+        return formatValue.int8();
       case 4:
-        return heightBuffer.int16();
+        return formatValue.int16();
       case 5:
-        return heightBuffer.int32();
+        return formatValue.int32();
       case 6:
-        return heightBuffer.text();
+        return formatValue.text();
 
       default:
-        return heightBuffer.uint16();
+        return formatValue.text();
     }
   }
 
@@ -90,7 +90,11 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
       onBackdropPress={onClose}>
       <View style={styles.container}>
         <View style={styles.input_container}>
-          <TextInput placeholder="Enter Value" onChangeText={setText} />
+          <TextInput
+            placeholder="Enter Value"
+            onChangeText={setText}
+            value={text}
+          />
         </View>
         <SelectDropdown clickedDropdown={setSelectedFormat} />
         <Buton text="SEND" onPress={handleSend} loading={loading} />

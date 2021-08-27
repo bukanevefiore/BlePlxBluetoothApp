@@ -109,10 +109,10 @@ export default function DeviceDetailPage() {
         selectedCharacteristicUuid,
       );
 
-      const heightInCentimeters = Buffer.from(
+      const decodedValue = Buffer.from(
         readCharacteristic.value,
         'base64',
-      ).toString('ascii'); //.readUInt16LE(0); //
+      ).toString('ascii'); //.readUInt16LE(0);
 
       Alert.alert(
         'Value :   ' + readCharacteristic.value,
@@ -121,27 +121,29 @@ export default function DeviceDetailPage() {
           ', CharacteristicUuid : ' +
           selectedCharacteristicUuid.slice(4, 8) +
           '  ReadCharacteristic.value : ' +
-          heightInCentimeters,
+          decodedValue,
       );
     } catch (error) {
-      Alert.alert('catchError:' + error);
+      Alert.alert('Try again..');
     }
   }
 
-  async function handleSendValue(heightBuffer) {
+  async function handleSendValue(value) {
     try {
       setSendButonState(true);
 
       await device.writeCharacteristicWithResponseForService(
         selectedServiceUuid,
         selectedCharacteristicUuid,
-        heightBuffer,
+        value,
       );
 
       setSendButonState(false);
       Alert.alert('Update process successful..');
     } catch (error) {
-      Alert.alert('catchError: ' + error);
+      Alert.alert(
+        'The operation could not be performed. Check your device connection.',
+      );
       setSendButonState(false);
     }
   }
