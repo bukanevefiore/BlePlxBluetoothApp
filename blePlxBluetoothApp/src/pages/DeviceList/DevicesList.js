@@ -12,7 +12,7 @@ import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
 import Separator from '../../components/Separator';
-import ErrorMessageParser from '../../../utils/ErrorMessageParser';
+import ErrorMessageParser from '../../utils/ErrorMessageParser';
 
 const manager = new BleManager();
 

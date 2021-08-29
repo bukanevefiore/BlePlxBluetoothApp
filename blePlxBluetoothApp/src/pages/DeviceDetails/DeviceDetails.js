@@ -10,7 +10,7 @@ import SectionListHeaderCard from '../../components/DeviceDetail/SectionListHead
 import SectionListItemCard from '../../components/DeviceDetail/SectionListItemCard/SectionListItemCard';
 import Loading from '../../components/Loading/Loading';
 import CharateristicUpdateModal from '../../components/DeviceDetail/CharacteristicUpdateModal';
-import ErrorMessageParser from '../../../utils/ErrorMessageParser';
+import ErrorMessageParser from '../../utils/ErrorMessageParser';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
