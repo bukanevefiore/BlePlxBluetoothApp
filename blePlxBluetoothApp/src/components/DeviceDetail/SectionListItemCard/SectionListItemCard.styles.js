@@ -6,7 +6,7 @@ export default StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: colors.extlightGray,
-    padding: 10,
+    height: 50,
     marginVertical: 4,
     marginHorizontal: 10,
     borderWidth: 0.7,
@@ -17,5 +17,10 @@ export default StyleSheet.create({
   title: {
     fontSize: 20,
     color: colors.blacGray,
+    padding: 10,
+  },
+  icon: {
+    alignContent: 'center',
+    justifyContent: 'center',
   },
 });

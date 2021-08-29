@@ -1,11 +1,13 @@
 import React, {useState} from 'react';
-import {View, TextInput, Alert} from 'react-native';
+import {View, TextInput, Alert, Text} from 'react-native';
 import Modal from 'react-native-modal';
 import {Buffer} from 'buffer';
 
 import Buton from '../../Button/Button';
 import SelectDropdown from '../SelectDropdown';
 import styles from './CharateristicUpdateModal.styles';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import colors from '../../../styles/colors';
 
 const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
   const [text, setText] = useState(null);
@@ -72,7 +74,7 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
 
   function handleSend() {
     if (!text) {
-      Alert.alert('Please enter a value...');
+      setText('Connot be blank !');
       return;
     }
 
@@ -95,6 +97,14 @@ const CharacteristicUpdateModal = ({isVisible, onClose, onSend, loading}) => {
             onChangeText={setText}
             value={text}
           />
+          {!text ? (
+            <Icon
+              name="exclamation"
+              size={23}
+              style={styles.icon}
+              color={colors.red}
+            />
+          ) : null}
         </View>
         <SelectDropdown clickedDropdown={setSelectedFormat} />
         <Buton text="SEND" onPress={handleSend} loading={loading} />

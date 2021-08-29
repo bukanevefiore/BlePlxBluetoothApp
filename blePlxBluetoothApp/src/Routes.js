@@ -9,6 +9,7 @@
 import React from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import FlashMessage from 'react-native-flash-message';
 
 import DevicesList from './pages/DeviceList';
 import DeviceDetail from './pages/DeviceDetails/DeviceDetails';
@@ -41,6 +42,7 @@ function Routes() {
             }}
           />
         </Stack.Navigator>
+        <FlashMessage position="top" />
       </NavigationContainer>
     </DeviceFeatureProvider>
   );

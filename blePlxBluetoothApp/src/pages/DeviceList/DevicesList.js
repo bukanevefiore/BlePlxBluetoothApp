@@ -4,6 +4,7 @@ import {BleManager, ScanMode} from 'react-native-ble-plx';
 import RNAndroidLocationEnabler from 'react-native-android-location-enabler';
 import {useDebouncedCallback} from 'use-debounce';
 import {useDispatch} from 'react-redux';
+import {showMessage} from 'react-native-flash-message';
 
 import SwitchButton from '../../components/SwitchButton';
 import DeviceListEmpty from '../../components/DeviceListEmpty';
@@ -11,6 +12,7 @@ import SubTitle from '../../components/SubTitle';
 import DeviceListItemCard from '../../components/DeviceListItemCard';
 import Layout from '../../components/Layout';
 import Separator from '../../components/Separator';
+import ErrorMessageParser from '../../../utils/ErrorMessageParser';
 
 const manager = new BleManager();
 
@@ -44,13 +46,13 @@ const DevicesListPage = ({navigation}) => {
   const deviceScanListener = useDebouncedCallback(
     (error, device) => {
       if (error) {
-        Alert.alert('Hata: ' + JSON.stringify(error));
+        Alert.alert(error);
 
         return;
       }
 
       if (!device) {
-        return Alert.alert('cihazlar null');
+        return Alert.alert('Device null');
       }
 
       addDeviceToList(device);
@@ -66,7 +68,7 @@ const DevicesListPage = ({navigation}) => {
       const scanOptions = {scanMode: ScanMode.LowPower};
       manager.startDeviceScan(null, scanOptions, deviceScanListener);
     } catch (error) {
-      Alert.alert('try catch hatası: ', error);
+      Alert.alert(error.message);
     }
   };
 
@@ -77,30 +79,36 @@ const DevicesListPage = ({navigation}) => {
         fastInterval: 5000,
       })
         .then(data => {
-          Alert.alert('Location and Bluetooth ' + data);
+          Alert.alert('Location and Bluetooth ' + data + '!!');
+
           setIsBluetoothScanning(true);
           setTimeout(() => {
             deviceScan();
           }, 5000);
         })
-        .catch(err => {
-          Alert.alert('Error' + err.message + ', Code : ' + err.code);
+        .catch(error => {
+          showMessage({
+            message: ErrorMessageParser(JSON.stringify(error.code)),
+            type: 'warn',
+          });
         });
     }
   };
 
   const handleToggleBluetooth = async value => {
+    console.log(value);
     const bluetoothState = await manager.state();
     if (value) {
       if (bluetoothState !== 'PoweredOn') {
         manager.enable();
         onLocationEnabledPressed();
       }
+      onLocationEnabledPressed();
     }
-    manager.disable();
-    setDeviceList([]);
     manager.stopDeviceScan();
+    manager.disable();
     setIsBluetoothScanning(false);
+    setDeviceList([]);
   };
 
   // cihaz bağlantısı
@@ -116,8 +124,15 @@ const DevicesListPage = ({navigation}) => {
       });
 
       navigation.navigate('DeviceDetail');
+      showMessage({
+        message: 'Device connection successful',
+        type: 'success',
+      });
     } catch (error) {
-      Alert.alert('Ble Plx / Catch', 'Bağlantı başarısız: ' + error);
+      showMessage({
+        message: ErrorMessageParser(JSON.stringify(error.errorCode)),
+        type: 'warn',
+      });
     }
   }
 

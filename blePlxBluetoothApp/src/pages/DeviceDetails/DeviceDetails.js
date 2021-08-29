@@ -3,12 +3,14 @@ import {Alert, SafeAreaView, SectionList} from 'react-native';
 import {useSelector} from 'react-redux';
 import {useDebouncedCallback} from 'use-debounce';
 import {Buffer} from 'buffer';
+import {showMessage} from 'react-native-flash-message';
 
 import styles from './DeviceDetails.styles';
 import SectionListHeaderCard from '../../components/DeviceDetail/SectionListHeaderCard';
 import SectionListItemCard from '../../components/DeviceDetail/SectionListItemCard/SectionListItemCard';
 import Loading from '../../components/Loading/Loading';
 import CharateristicUpdateModal from '../../components/DeviceDetail/CharacteristicUpdateModal';
+import ErrorMessageParser from '../../../utils/ErrorMessageParser';
 
 export default function DeviceDetailPage() {
   const device = useSelector(d => d.selectedDevice);
@@ -39,7 +41,10 @@ export default function DeviceDetailPage() {
 
       await getServices(services);
     } catch (error) {
-      Alert.alert('Catch :' + error);
+      showMessage({
+        message: ErrorMessageParser(JSON.stringify(error.errorCode)),
+        type: 'warning',
+      });
     }
   }
 
@@ -75,7 +80,10 @@ export default function DeviceDetailPage() {
         addCharAndServiceList(resolvedService);
       }
     } catch (error) {
-      Alert.alert('getServiceHata: ' + error);
+      showMessage({
+        message: ErrorMessageParser(JSON.stringify(error.errorCode)),
+        type: 'warning',
+      });
     }
   }
 
@@ -90,8 +98,6 @@ export default function DeviceDetailPage() {
     return characteristics;
   }
 
-  const loading = () => <Loading />;
-
   function handleInputToggle(characteristicUuid, serviceuuid) {
     setSendButonState(false);
     setInputModalVisible(!inputModalVisible);
@@ -100,15 +106,16 @@ export default function DeviceDetailPage() {
   }
 
   async function characteristicValueRead(characteristicUuid, serviceuuid) {
-    try {
-      setSelectedCharacteristicUuid(characteristicUuid);
-      setSelectedServiceUuid(serviceuuid);
+    setSelectedCharacteristicUuid('');
+    setSelectedServiceUuid('');
+    setSelectedCharacteristicUuid(characteristicUuid);
+    setSelectedServiceUuid(serviceuuid);
 
+    try {
       const readCharacteristic = await device.readCharacteristicForService(
         selectedServiceUuid,
         selectedCharacteristicUuid,
       );
-
       const decodedValue = Buffer.from(
         readCharacteristic.value,
         'base64',
@@ -120,11 +127,16 @@ export default function DeviceDetailPage() {
           selectedServiceUuid.slice(4, 8) +
           ', CharacteristicUuid : ' +
           selectedCharacteristicUuid.slice(4, 8) +
-          '  ReadCharacteristic.value : ' +
-          decodedValue,
+          ', isWritableWithResponse : ' +
+          readCharacteristic.isWritableWithResponse +
+          ', isReadable : ' +
+          readCharacteristic.isReadable,
       );
     } catch (error) {
-      Alert.alert('Try again..');
+      showMessage({
+        message: ErrorMessageParser(JSON.stringify(error.errorCode)),
+        type: 'warning',
+      });
     }
   }
 
@@ -138,15 +150,18 @@ export default function DeviceDetailPage() {
         value,
       );
 
-      setSendButonState(false);
       Alert.alert('Update process successful..');
     } catch (error) {
       Alert.alert(
-        'The operation could not be performed. Check your device connection.',
+        'The operation could not be performed.' +
+          ErrorMessageParser(JSON.stringify(error.errorCode)),
       );
+    } finally {
       setSendButonState(false);
     }
   }
+
+  const loading = () => <Loading />;
 
   return (
     <SafeAreaView style={styles.container}>
